@@ -100,74 +100,162 @@ function Sidebar({ page, setPage }) {
 ========================= */
 
 const wizardSteps = [
-  "Rule Content",
+  "Add Rule(s)",
   "Pattern Classification",
-  "Pattern Type",
   "Rule Engineering",
-  "Deterministic Rule",
-  "Keyword Hints",
-  "Retrieval Layer",
+  "Keyword Retrieval",
   "Client Example Coverage",
+  "Onboarding Complete",
 ];
 
 function WizardPage() {
   const [step, setStep] = useState(0);
+  const pct = ((step + 1) / wizardSteps.length) * 100;
+
+  const stepContent = [
+    {
+      title: "Add Detection Rule(s)",
+      subtitle: "Paste a single rule or upload a CSV containing many rules at once.",
+      body: (
+        <div className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-2xl border bg-white p-5 shadow-sm">
+            <div className="mb-2 text-sm text-slate-500">Paste Single Rule</div>
+            <textarea
+              className="h-40 w-full rounded-xl border border-slate-300 p-4 text-sm"
+              defaultValue="Detect whether the advisor asks the customer how they found the company."
+            />
+          </div>
+          <div className="rounded-2xl border bg-white p-5 shadow-sm">
+            <div className="mb-2 text-sm text-slate-500">Upload Multiple Rules</div>
+            <div className="rounded-xl border-2 border-dashed border-slate-300 p-10 text-center text-slate-400">
+              Drop CSV here
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Pattern Classification",
+      subtitle: "The classifier assigns the rule to a conversational pattern family. If pattern = OTHER, ontology expansion is triggered.",
+      body: (
+        <div className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-2xl border bg-white p-5 shadow-sm">
+            <div className="text-sm text-slate-500">Suggested Pattern</div>
+            <div className="mt-2 text-lg font-semibold text-slate-900">Question Pattern</div>
+          </div>
+          <div className="rounded-2xl border bg-white p-5 shadow-sm">
+            <div className="text-sm text-slate-500">If Pattern = OTHER</div>
+            <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-600">
+              <li>Update pattern classification library</li>
+              <li>Create new pattern-specific prompt</li>
+              <li>Return to pattern output</li>
+            </ul>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Deterministic Rule Engineering",
+      subtitle: "The pattern-specific engineering prompt converts the raw rule into deterministic signal extraction and qualification logic.",
+      body: (
+        <div className="rounded-2xl border bg-white p-5 shadow-sm">
+          <div className="rounded-xl bg-slate-50 p-4 text-sm text-slate-700">
+            <div className="font-semibold text-slate-900">Deterministic Rule v1 Preview</div>
+            <div className="mt-2">LAYER 1 — SIGNAL EXTRACTION</div>
+            <div>Signal A: QUESTION_WORD + DISCOVERY_VERB + OBJECT_REFERENCE</div>
+            <div>Signal B: SOURCE_REFERENCE + DISCOVERY_VERB</div>
+            <div className="mt-3">LAYER 2 — QUALIFICATION GATE</div>
+            <div>IF Signal A = TRUE OR Signal B = TRUE → rule_present = TRUE</div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Keyword Retrieval Layer",
+      subtitle: "Generate Python retrieval hints to reduce transcript size before the first AI pass.",
+      body: (
+        <div className="rounded-2xl border bg-white p-5 shadow-sm">
+          <div className="flex flex-wrap gap-2">
+            {['how','find','found','source','website','online','google','looking','site','browsing'].map((k) => (
+              <span key={k} className="rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-600">{k}</span>
+            ))}
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Client Example Coverage Mapping",
+      subtitle: "Inject quote-level examples before the first 10-call test run.",
+      body: (
+        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="rounded-2xl border bg-white p-5 shadow-sm">
+            <div className="mb-3 text-sm text-slate-500">Required Format</div>
+            <div className="rounded-xl bg-slate-50 p-4 text-sm text-slate-700">Example ID | Label | Speaker | Quote | Context</div>
+            <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-600">
+              <li>Each row = one behavioural quote</li>
+              <li>Labels = SHOULD_DETECT / SHOULD_NOT_DETECT</li>
+              <li>Do not upload full transcripts</li>
+            </ul>
+          </div>
+          <div className="rounded-2xl border bg-white p-5 shadow-sm">
+            <table className="w-full text-sm">
+              <thead className="text-left text-slate-500">
+                <tr><th className="pb-2">Example</th><th>Label</th><th>Gap</th></tr>
+              </thead>
+              <tbody>
+                <tr className="border-t"><td className="py-2">EX-01</td><td>SHOULD_DETECT</td><td className="text-emerald-600">Covered</td></tr>
+                <tr className="border-t"><td className="py-2">EX-02</td><td>SHOULD_DETECT</td><td className="text-amber-600">Pattern Gap</td></tr>
+                <tr className="border-t"><td className="py-2">EX-03</td><td>SHOULD_NOT_DETECT</td><td className="text-rose-600">Logic Risk</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Onboarding Complete",
+      subtitle: "The rule has completed steps 1–7.5 and is ready to enter the sequential calibration queue.",
+      body: (
+        <div className="rounded-2xl border bg-white p-10 text-center shadow-sm">
+          <div className="text-lg font-semibold text-slate-900">Ready for Calibration</div>
+          <div className="mt-2 text-slate-500">Next step: the active rule moves into the calibration dashboard and is processed one rule at a time.</div>
+          <button className="mt-6 rounded-xl bg-pink-600 px-6 py-3 font-semibold text-white">Send to Calibration Queue</button>
+        </div>
+      ),
+    },
+  ][step];
 
   return (
     <div className="space-y-8 p-10">
-      <h1 className="text-3xl font-bold">Rule Onboarding Wizard</h1>
+      <div>
+        <h1 className="text-3xl font-bold">AI Rule Onboarding Wizard</h1>
+        <p className="mt-2 text-slate-500">Initial setup flow for steps 1–7.5 before calibration begins.</p>
+      </div>
 
-      {/* Stepper */}
-      <div className="flex gap-2 flex-wrap">
-        {wizardSteps.map((s, i) => (
-          <div
-            key={i}
-            className={`px-3 py-2 rounded-lg text-sm border ${
-              i === step
-                ? "bg-pink-600 text-white"
-                : "bg-white text-slate-500"
-            }`}
-          >
-            {i + 1}. {s}
+      <div className="flex flex-wrap gap-2">
+        {wizardSteps.map((label, i) => (
+          <div key={label} className={`rounded-full px-3 py-1 text-xs ${i === step ? 'bg-pink-50 text-pink-700' : 'border border-slate-200 bg-white text-slate-500'}`}>
+            {i + 1}. {label}
           </div>
         ))}
       </div>
 
-      {/* Step Content */}
-      <div className="rounded-xl border bg-white p-6">
-        {step === 0 && (
-          <textarea
-            className="w-full border rounded p-3"
-            rows={8}
-            placeholder="Paste Customer Detection Rule Content Raw"
-          />
-        )}
-
-        {step === 7 && (
-          <textarea
-            className="w-full border rounded p-3"
-            rows={8}
-            placeholder="Paste structured client behavioural quotes"
-          />
-        )}
-
-        {step !== 0 && step !== 7 && (
-          <div className="text-slate-400">AI prompt stage preview</div>
-        )}
+      <div className="h-2 w-full rounded-full bg-slate-200">
+        <div className="h-2 rounded-full bg-pink-500 transition-all" style={{ width: `${pct}%` }} />
       </div>
 
-      <div className="flex gap-4">
-        <button
-          onClick={() => setStep(Math.max(step - 1, 0))}
-          className="px-4 py-2 border rounded"
-        >
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900">{stepContent.title}</h2>
+        <p className="mt-2 text-slate-500">{stepContent.subtitle}</p>
+        <div className="mt-6">{stepContent.body}</div>
+      </div>
+
+      <div className="flex justify-between">
+        <button disabled={step === 0} onClick={() => setStep(step - 1)} className="rounded-xl border border-slate-300 px-6 py-3 text-slate-600 disabled:opacity-40">
           Back
         </button>
-        <button
-          onClick={() => setStep(Math.min(step + 1, wizardSteps.length - 1))}
-          className="px-4 py-2 bg-pink-600 text-white rounded"
-        >
-          Next
+        <button disabled={step === wizardSteps.length - 1} onClick={() => setStep(step + 1)} className="rounded-xl bg-pink-500 px-6 py-3 font-semibold text-white disabled:opacity-40">
+          Continue
         </button>
       </div>
     </div>
