@@ -351,19 +351,41 @@
 
         function DashboardPage() {
           const [activeCall, setActiveCall] = useState(null);
+          const [mode, setMode] = useState("AI Assisted");
 
           const mismatchCount = useMemo(
             () => tenCalls.filter((c) => c.status === "Mismatch").length,
             []
           );
 
+          const modes = ["Manual", "AI Assisted", "Full Automation"];
+
           return (
             <div className="space-y-8 p-10">
-              <div>
-                <h1 className="text-3xl font-bold">Calibration Command Centre</h1>
-                <p className="mt-2 text-slate-500">
-                  Active rule lifecycle, calibration intelligence, governance, retrieval diagnostics, and 10-call testing view.
-                </p>
+              <div className="flex justify-between items-start">
+                <div>
+                  <h1 className="text-3xl font-bold">Calibration Command Centre</h1>
+                  <p className="mt-2 text-slate-500">
+                    Active rule lifecycle, calibration intelligence, governance, retrieval diagnostics, and 10-call testing view.
+                  </p>
+                </div>
+                
+                {/* Mode Selector */}
+                <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-inner">
+                  {modes.map((m) => (
+                    <button
+                      key={m}
+                      onClick={() => setMode(m)}
+                      className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
+                        mode === m 
+                          ? "bg-white text-pink-600 shadow-sm ring-1 ring-slate-200" 
+                          : "text-slate-500 hover:text-slate-700"
+                      }`}
+                    >
+                      {m}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Rule lifecycle state */}
