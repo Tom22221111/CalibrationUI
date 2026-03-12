@@ -15,6 +15,10 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #06101d;
+            color: white;
+            margin: 0;
+            padding: 0;
         }
     </style>
 </head>
@@ -42,8 +46,7 @@
             signalC: false,
           },
           {
-            quote:
-              "If I don't hear back after you spoke to your daughter, I'll give you a wee follow‑up call.",
+            quote: "If I don't hear back after you spoke to your daughter, I'll give you a wee follow‑up call.",
             signalA: false,
             signalB: false,
             signalC: true,
@@ -69,17 +72,20 @@
 
         function Badge({ status }) {
           const map = {
-            Correct: "bg-emerald-50 text-emerald-700",
-            Mismatch: "bg-rose-50 text-rose-700",
-            "Manager Query": "bg-amber-50 text-amber-700",
-            TRUE: "bg-emerald-50 text-emerald-700",
-            FALSE: "bg-rose-50 text-rose-700",
+            Correct: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+            Mismatch: "bg-rose-500/10 text-rose-400 border-rose-500/20",
+            "Manager Query": "bg-amber-500/10 text-amber-400 border-amber-500/20",
+            TRUE: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+            FALSE: "bg-rose-500/10 text-rose-400 border-rose-500/20",
+            "Ready": "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+            "Missing": "bg-rose-500/10 text-rose-400 border-rose-500/20",
+            "Dynamic": "bg-pink-500/10 text-pink-400 border-pink-500/20",
           };
 
           return (
             <span
-              className={`rounded-full px-2 py-1 text-xs font-medium ${
-                map[status] || "bg-slate-100 text-slate-600"
+              className={`rounded-full px-2 py-1 text-xs font-medium border ${
+                map[status] || "bg-slate-500/10 text-slate-400 border-slate-500/20"
               }`}
             >
               {status}
@@ -93,6 +99,7 @@
 
         function Sidebar({ page, setPage }) {
           const items = [
+            "Detection Flow",
             "Onboarding Wizard",
             "Dashboard",
             "Pattern Library",
@@ -100,15 +107,15 @@
           ];
 
           return (
-            <div className="w-64 border-r bg-white p-6">
-              <div className="mb-8 text-xl font-bold">Metrix Calibration</div>
+            <div className="w-64 border-r border-white/10 bg-[#0c1830] p-6 shrink-0">
+              <div className="mb-8 text-xl font-bold text-white tracking-tight">Metrix Calibration</div>
               <div className="space-y-2">
                 {items.map((i) => (
                   <div
                     key={i}
                     onClick={() => setPage(i)}
-                    className={`cursor-pointer rounded-lg px-3 py-2 text-sm ${
-                      page === i ? "bg-pink-50 text-pink-600" : "text-slate-600"
+                    className={`cursor-pointer rounded-lg px-3 py-2 text-sm transition-colors ${
+                      page === i ? "bg-pink-500/20 text-pink-400 font-semibold" : "text-slate-400 hover:bg-white/5 hover:text-white"
                     }`}
                   >
                     {i}
@@ -120,397 +127,257 @@
         }
 
         /* =========================
-           ONBOARDING WIZARD (RESTORED STEPPER)
+           ONBOARDING WIZARD
         ========================= */
 
-        const wizardSteps = [
-          "Add Rule(s)",
-          "Pattern Classification",
-          "Rule Engineering",
-          "Keyword Retrieval",
-          "Client Example Coverage",
-          "Onboarding Complete",
-        ];
+        const wizardSteps = ["Add Rule(s)", "Pattern Classification", "Rule Engineering", "Keyword Retrieval", "Client Example Coverage", "Onboarding Complete"];
 
         function WizardPage() {
           const [step, setStep] = useState(0);
           const pct = ((step + 1) / wizardSteps.length) * 100;
-
           const stepContent = [
-            {
-              title: "Add Detection Rule(s)",
-              subtitle: "Paste a single rule or upload a CSV containing many rules at once.",
-              body: (
+            { title: "Add Detection Rule(s)", subtitle: "Paste a single rule or upload a CSV containing many rules at once.", body: (
                 <div className="grid gap-6 lg:grid-cols-2">
-                  <div className="rounded-2xl border bg-white p-5 shadow-sm">
-                    <div className="mb-2 text-sm text-slate-500">Paste Single Rule</div>
-                    <textarea
-                      className="h-40 w-full rounded-xl border border-slate-300 p-4 text-sm"
-                      defaultValue="Detect whether the advisor asks the customer how they found the company."
-                    />
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 shadow-sm">
+                    <div className="mb-2 text-sm text-slate-400 font-semibold">Paste Single Rule</div>
+                    <textarea className="h-40 w-full rounded-xl border border-white/10 bg-[#0b1628] p-4 text-sm text-white focus:outline-none focus:border-pink-500/50" defaultValue="Detect whether the advisor asks the customer how they found the company." />
                   </div>
-                  <div className="rounded-2xl border bg-white p-5 shadow-sm">
-                    <div className="mb-2 text-sm text-slate-500">Upload Multiple Rules</div>
-                    <div className="rounded-xl border-2 border-dashed border-slate-300 p-10 text-center text-slate-400">
-                      Drop CSV here
-                    </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 shadow-sm">
+                    <div className="mb-2 text-sm text-slate-400 font-semibold">Upload Multiple Rules</div>
+                    <div className="rounded-xl border-2 border-dashed border-white/10 p-10 text-center text-slate-500">Drop CSV here</div>
                   </div>
                 </div>
-              ),
-            },
-            {
-              title: "Pattern Classification",
-              subtitle: "The classifier assigns the rule to a conversational pattern family. If pattern = OTHER, ontology expansion is triggered.",
-              body: (
+              ) },
+            { title: "Pattern Classification", subtitle: "The classifier assigns the rule to a conversational pattern family.", body: (
                 <div className="grid gap-6 lg:grid-cols-2">
-                  <div className="rounded-2xl border bg-white p-5 shadow-sm">
-                    <div className="text-sm text-slate-500">Suggested Pattern</div>
-                    <div className="mt-2 text-lg font-semibold text-slate-900">Question Pattern</div>
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 shadow-sm">
+                    <div className="text-sm text-slate-400 font-semibold">Suggested Pattern</div>
+                    <div className="mt-2 text-lg font-semibold text-white">Question Pattern</div>
                   </div>
-                  <div className="rounded-2xl border bg-white p-5 shadow-sm">
-                    <div className="text-sm text-slate-500">If Pattern = OTHER</div>
-                    <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-600">
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 shadow-sm">
+                    <div className="text-sm text-slate-400 font-semibold">If Pattern = OTHER</div>
+                    <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-300">
                       <li>Update pattern classification library</li>
                       <li>Create new pattern-specific prompt</li>
-                      <li>Return to pattern output</li>
                     </ul>
                   </div>
                 </div>
-              ),
-            },
-            {
-              title: "Deterministic Rule Engineering",
-              subtitle: "The pattern-specific engineering prompt converts the raw rule into deterministic signal extraction and qualification logic.",
-              body: (
-                <div className="rounded-2xl border bg-white p-5 shadow-sm">
-                  <div className="rounded-xl bg-slate-50 p-4 text-sm text-slate-700">
-                    <div className="font-semibold text-slate-900">Deterministic Rule v1 Preview</div>
-                    <div className="mt-2">LAYER 1 — SIGNAL EXTRACTION</div>
-                    <div>Signal A: QUESTION_WORD + DISCOVERY_VERB + OBJECT_REFERENCE</div>
-                    <div>Signal B: SOURCE_REFERENCE + DISCOVERY_VERB</div>
+              ) },
+            { title: "Rule Engineering", subtitle: "Converts the raw rule into deterministic logic.", body: (
+                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 shadow-sm">
+                  <div className="rounded-xl bg-[#0b1628] p-4 text-sm text-slate-300">
+                    <div className="font-semibold text-white mb-2">Deterministic Rule v1 Preview</div>
+                    <div>LAYER 1 — SIGNAL EXTRACTION</div>
+                    <div className="opacity-70">Signal A: QUESTION_WORD + DISCOVERY_VERB + OBJECT_REFERENCE</div>
                     <div className="mt-3">LAYER 2 — QUALIFICATION GATE</div>
-                    <div>IF Signal A = TRUE OR Signal B = TRUE → rule_present = TRUE</div>
+                    <div className="opacity-70">IF Signal A = TRUE → rule_present = TRUE</div>
                   </div>
                 </div>
-              ),
-            },
-            {
-              title: "Keyword Retrieval Layer",
-              subtitle: "Generate Python retrieval hints to reduce transcript size before the first AI pass.",
-              body: (
-                <div className="rounded-2xl border bg-white p-5 shadow-sm">
+              ) },
+            { title: "Keyword Retrieval", subtitle: "Generate Python retrieval hints.", body: (
+                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 shadow-sm">
                   <div className="flex flex-wrap gap-2">
-                    {['how','find','found','source','website','online','google','looking','site','browsing'].map((k) => (
-                      <span key={k} className="rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-600">{k}</span>
+                    {['how','find','found','source','website','online','google'].map(k => (
+                      <span key={k} className="rounded-full bg-white/5 border border-white/10 px-2.5 py-1 text-xs text-slate-300">{k}</span>
                     ))}
                   </div>
                 </div>
-              ),
-            },
-            {
-              title: "Client Example Coverage Mapping",
-              subtitle: "Inject quote-level examples before the first 10-call test run.",
-              body: (
-                <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-                  <div className="rounded-2xl border bg-white p-5 shadow-sm">
-                    <div className="mb-3 text-sm text-slate-500">Required Format</div>
-                    <div className="rounded-xl bg-slate-50 p-4 text-sm text-slate-700">Example ID | Label | Speaker | Quote | Context</div>
-                    <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-600">
-                      <li>Each row = one behavioural quote</li>
-                      <li>Labels = SHOULD_DETECT / SHOULD_NOT_DETECT</li>
-                      <li>Do not upload full transcripts</li>
-                    </ul>
-                  </div>
-                  <div className="rounded-2xl border bg-white p-5 shadow-sm">
+              ) },
+            { title: "Client Example Coverage", subtitle: "Inject quote-level examples.", body: (
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 shadow-sm">
                     <table className="w-full text-sm">
-                      <thead className="text-left text-slate-500">
-                        <tr><th className="pb-2">Example</th><th>Label</th><th>Gap</th></tr>
-                      </thead>
-                      <tbody>
-                        <tr className="border-t"><td className="py-2">EX-01</td><td>SHOULD_DETECT</td><td className="text-emerald-600">Covered</td></tr>
-                        <tr className="border-t"><td className="py-2">EX-02</td><td>SHOULD_DETECT</td><td className="text-amber-600">Pattern Gap</td></tr>
-                        <tr className="border-t"><td className="py-2">EX-03</td><td>SHOULD_NOT_DETECT</td><td className="text-rose-600">Logic Risk</td></tr>
+                      <thead className="text-left text-slate-400"><tr><th className="pb-2">Example</th><th>Label</th></tr></thead>
+                      <tbody className="text-slate-200">
+                        <tr className="border-t border-white/5"><td className="py-2">EX-01</td><td><span className="text-emerald-400">SHOULD_DETECT</span></td></tr>
+                        <tr className="border-t border-white/5"><td className="py-2">EX-02</td><td><span className="text-rose-400">SHOULD_NOT_DETECT</span></td></tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
-              ),
-            },
-            {
-              title: "Onboarding Complete",
-              subtitle: "The rule has completed steps 1–7.5 and is ready to enter the sequential calibration queue.",
-              body: (
-                <div className="rounded-2xl border bg-white p-10 text-center shadow-sm">
-                  <div className="text-lg font-semibold text-slate-900">Ready for Calibration</div>
-                  <div className="mt-2 text-slate-500">Next step: the active rule moves into the calibration dashboard and is processed one rule at a time.</div>
-                  <button className="mt-6 rounded-xl bg-pink-600 px-6 py-3 font-semibold text-white">Send to Calibration Queue</button>
+              ) },
+            { title: "Onboarding Complete", subtitle: "Ready for calibration.", body: (
+                <div className="rounded-2xl border border-pink-500/20 bg-pink-500/5 p-10 text-center shadow-sm">
+                  <div className="text-lg font-semibold text-white">Ready for Calibration</div>
+                  <button className="mt-6 rounded-xl bg-pink-600 px-6 py-3 font-semibold text-white shadow-lg shadow-pink-600/20">Send to Calibration Queue</button>
                 </div>
-              ),
-            },
+              ) }
           ][step];
 
           return (
-            <div className="space-y-8 p-10">
+            <div className="space-y-8 p-10 max-w-5xl">
               <div>
-                <h1 className="text-3xl font-bold">AI Rule Onboarding Wizard</h1>
-                <p className="mt-2 text-slate-500">Initial setup flow for steps 1–7.5 before calibration begins.</p>
+                <h1 className="text-3xl font-bold tracking-tight">AI Rule Onboarding Wizard</h1>
+                <p className="mt-2 text-slate-400">Initial setup flow for steps 1–7.5 before calibration begins.</p>
               </div>
-
               <div className="flex flex-wrap gap-2">
                 {wizardSteps.map((label, i) => (
-                  <div key={label} className={`rounded-full px-3 py-1 text-xs ${i === step ? 'bg-pink-50 text-pink-700' : 'border border-slate-200 bg-white text-slate-500'}`}>
+                  <div key={label} className={`rounded-full px-3 py-1 text-xs border ${i === step ? 'bg-pink-500/20 text-pink-300 border-pink-500/30' : 'bg-white/5 text-slate-400 border-white/5'}`}>
                     {i + 1}. {label}
                   </div>
                 ))}
               </div>
-
-              <div className="h-2 w-full rounded-full bg-slate-200">
-                <div className="h-2 rounded-full bg-pink-500 transition-all" style={{ width: `${pct}%` }} />
+              <div className="h-1.5 w-full rounded-full bg-white/5">
+                <div className="h-1.5 rounded-full bg-pink-500 transition-all duration-500" style={{ width: `${pct}%` }} />
               </div>
-
               <div>
-                <h2 className="text-2xl font-bold text-slate-900">{stepContent.title}</h2>
-                <p className="mt-2 text-slate-500">{stepContent.subtitle}</p>
+                <h2 className="text-2xl font-bold text-white">{stepContent.title}</h2>
+                <p className="mt-2 text-slate-400">{stepContent.subtitle}</p>
                 <div className="mt-6">{stepContent.body}</div>
               </div>
-
-              <div className="flex justify-between">
-                <button disabled={step === 0} onClick={() => setStep(step - 1)} className="rounded-xl border border-slate-300 px-6 py-3 text-slate-600 disabled:opacity-40">
-                  Back
-                </button>
-                <button disabled={step === wizardSteps.length - 1} onClick={() => setStep(step + 1)} className="rounded-xl bg-pink-500 px-6 py-3 font-semibold text-white disabled:opacity-40">
-                  Continue
-                </button>
+              <div className="flex justify-between pt-4">
+                <button disabled={step === 0} onClick={() => setStep(step - 1)} className="rounded-xl border border-white/10 px-6 py-3 text-slate-300 disabled:opacity-20">Back</button>
+                <button disabled={step === wizardSteps.length - 1} onClick={() => setStep(step + 1)} className="rounded-xl bg-white/10 border border-white/10 px-6 py-3 font-semibold text-white disabled:opacity-20 hover:bg-white/15">Continue</button>
               </div>
             </div>
           );
         }
 
         /* =========================
-           DRILLDOWN
-        ========================= */
-
-        function DrilldownModal({ call, onClose }) {
-          if (!call) return null;
-
-          return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-              <div className="h-[90vh] w-[1100px] overflow-y-auto rounded-xl bg-slate-900 p-8 text-white">
-                <div className="mb-6 flex justify-between">
-                  <div>
-                    <div className="text-sm text-slate-400">Mismatch Drilldown</div>
-                    <div className="text-2xl font-bold">{call.id}</div>
-                  </div>
-                  <button onClick={onClose} className="text-slate-400">
-                    Close
-                  </button>
-                </div>
-
-                <div className="mb-8">
-                  <div className="mb-3 text-lg font-semibold">
-                    Step 0 — Candidate Quotes Retrieved
-                  </div>
-                  {candidateQuotesMock.map((q, i) => (
-                    <div key={i} className="mb-3 rounded-lg bg-slate-800 p-4">
-                      <div className="mb-2 text-sm text-slate-300">"{q.quote}"</div>
-                      <div className="flex gap-4 text-xs">
-                        <div>
-                          Signal A: <Badge status={q.signalA ? "TRUE" : "FALSE"} />
-                        </div>
-                        <div>
-                          Signal B: <Badge status={q.signalB ? "TRUE" : "FALSE"} />
-                        </div>
-                        <div>
-                          Signal C: <Badge status={q.signalC ? "TRUE" : "FALSE"} />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div>
-                  <div className="mb-3 text-lg font-semibold">
-                    Layer 2 — Qualification Gate
-                  </div>
-                  <div className="rounded-lg bg-slate-800 p-4 text-sm">
-                    rule_present = FALSE
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        }
-
-        /* =========================
-           DASHBOARD (RESTORED CONTENT)
+           DASHBOARD
         ========================= */
 
         function DashboardPage() {
           const [activeCall, setActiveCall] = useState(null);
-
-          const mismatchCount = useMemo(
-            () => tenCalls.filter((c) => c.status === "Mismatch").length,
-            []
-          );
-
           return (
-            <div className="space-y-8 p-10">
-              <div>
-                <h1 className="text-3xl font-bold">Calibration Command Centre</h1>
-                <p className="mt-2 text-slate-500">
-                  Active rule lifecycle, calibration intelligence, governance, retrieval diagnostics, and 10-call testing view.
-                </p>
-              </div>
-
+            <div className="space-y-8 p-10 max-w-6xl">
+              <h1 className="text-3xl font-bold tracking-tight">Calibration Command Centre</h1>
               <div className="grid grid-cols-5 gap-4">
-                <div className="rounded-xl border bg-white p-4">
-                  <div className="text-xs text-slate-500">Rule Name</div>
-                  <div className="mt-1 font-semibold">Fact Find – Source Question</div>
-                </div>
-                <div className="rounded-xl border bg-white p-4">
-                  <div className="text-xs text-slate-500">Version</div>
-                  <div className="mt-1 font-semibold">v1.2</div>
-                </div>
-                <div className="rounded-xl border bg-white p-4">
-                  <div className="text-xs text-slate-500">Stage</div>
-                  <div className="mt-1 font-semibold">Active Calibration</div>
-                </div>
-                <div className="rounded-xl border bg-white p-4">
-                  <div className="text-xs text-slate-500">Run Count</div>
-                  <div className="mt-1 font-semibold">2</div>
-                </div>
-                <div className="rounded-xl border bg-white p-4">
-                  <div className="text-xs text-slate-500">Last Lever Used</div>
-                  <div className="mt-1 font-semibold">Structural Pattern Coverage</div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-5 gap-4">
-                <div className="rounded-xl border bg-white p-4">
-                  <div className="text-xs text-slate-500">Detection Accuracy</div>
-                  <div className="mt-1 text-2xl font-bold text-emerald-600">82%</div>
-                </div>
-                <div className="rounded-xl border bg-white p-4">
-                  <div className="text-xs text-slate-500">Mismatches</div>
-                  <div className="mt-1 text-2xl font-bold text-rose-600">{mismatchCount}</div>
-                </div>
-                <div className="rounded-xl border bg-white p-4">
-                  <div className="text-xs text-slate-500">Manager Queries</div>
-                  <div className="mt-1 text-2xl font-bold text-amber-600">1</div>
-                </div>
-                <div className="rounded-xl border bg-white p-4">
-                  <div className="text-xs text-slate-500">Stability Score</div>
-                  <div className="mt-1 text-2xl font-bold text-slate-900">Medium</div>
-                </div>
-                <div className="rounded-xl border bg-white p-4">
-                  <div className="text-xs text-slate-500">Loop Progress</div>
-                  <div className="mt-2 h-2 rounded-full bg-slate-200">
-                    <div className="h-2 w-[60%] rounded-full bg-pink-600" />
-                  </div>
-                  <div className="mt-2 text-sm text-slate-500">Run 2 of expected 3–6</div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-6">
-                <div className="rounded-xl border bg-white p-6">
-                  <h2 className="mb-4 text-xl font-semibold">Signal Diagnostics Engine View</h2>
-                  <div className="space-y-3 text-sm text-slate-700">
-                    <div className="rounded-lg bg-slate-50 p-3">
-                      <div className="text-xs text-slate-500">Failure Layer</div>
-                      <div className="mt-1 font-medium">Signal Detection</div>
-                    </div>
-                    <div className="rounded-lg bg-slate-50 p-3">
-                      <div className="text-xs text-slate-500">Failed Signal</div>
-                      <div className="mt-1 font-medium">Signal A</div>
-                    </div>
-                    <div className="rounded-lg bg-slate-50 p-3">
-                      <div className="text-xs text-slate-500">Pattern Classification</div>
-                      <div className="mt-1 font-medium">Source Confirmation Question</div>
-                    </div>
-                    <div className="rounded-lg bg-slate-50 p-3">
-                      <div className="text-xs text-slate-500">Recommended Lever</div>
-                      <div className="mt-1 font-medium">Structural Pattern Coverage</div>
+                {["Rule Name", "Version", "Stage", "Accuracy", "Mismatches"].map((label, idx) => (
+                  <div key={label} className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
+                    <div className="text-xs text-slate-400 font-semibold uppercase tracking-wider">{label}</div>
+                    <div className={`mt-2 font-bold ${idx === 3 ? "text-emerald-400 text-2xl" : idx === 4 ? "text-rose-400 text-2xl" : "text-white"}`}>
+                      {idx === 0 ? "Fact Find" : idx === 1 ? "v1.2" : idx === 2 ? "Active" : idx === 3 ? "82%" : "3"}
                     </div>
                   </div>
-                </div>
-
-                <div className="rounded-xl border bg-white p-6">
-                  <h2 className="mb-4 text-xl font-semibold">Retrieval Diagnostics</h2>
-                  <div className="grid grid-cols-3 gap-3 text-sm">
-                    <div className="rounded-lg bg-slate-50 p-3">
-                      <div className="text-xs text-slate-500">Candidate Recall</div>
-                      <div className="mt-1 font-semibold">72%</div>
-                    </div>
-                    <div className="rounded-lg bg-slate-50 p-3">
-                      <div className="text-xs text-slate-500">Missed Quote Count</div>
-                      <div className="mt-1 font-semibold">3</div>
-                    </div>
-                    <div className="rounded-lg bg-slate-50 p-3">
-                      <div className="text-xs text-slate-500">Last Hint Expansion</div>
-                      <div className="mt-1 font-semibold">website / browsing</div>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
-
-              <div className="grid grid-cols-2 gap-6">
-                <div className="rounded-xl border bg-white p-6">
-                  <h2 className="mb-4 text-xl font-semibold">Coverage Heatmap</h2>
-                  <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div className="rounded-lg bg-emerald-50 p-3 text-emerald-700">Direct Discovery — 100%</div>
-                    <div className="rounded-lg bg-amber-50 p-3 text-amber-700">Confirmation Question — 60%</div>
-                    <div className="rounded-lg bg-rose-50 p-3 text-rose-700">Referral — 40%</div>
-                    <div className="rounded-lg bg-slate-100 p-3 text-slate-700">Pass-by — 0%</div>
-                  </div>
-                </div>
-
-                <div className="rounded-xl border bg-white p-6">
-                  <h2 className="mb-4 text-xl font-semibold">Pattern Expansion History</h2>
-                  <ul className="space-y-2 text-sm text-slate-700">
-                    <li>Run 1 — Added Confirmation Question Pattern</li>
-                    <li>Run 2 — Added Compound Object Reference</li>
-                    <li>Run 2 — Added Access-Driven Placement Logic</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="rounded-xl border bg-white p-6">
-                <h2 className="mb-4 text-xl font-semibold">10 Call Calibration Run</h2>
+              <div className="rounded-xl border border-white/10 bg-white/[0.04] p-6">
+                <h2 className="mb-6 text-xl font-semibold">10-Call Calibration Run</h2>
                 <table className="w-full text-sm">
-                  <thead className="text-left text-slate-500">
-                    <tr>
-                      <th>Call</th>
-                      <th>Expected</th>
-                      <th>Actual</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tenCalls.map((c) => (
-                      <tr
-                        key={c.id}
-                        className="cursor-pointer border-t hover:bg-slate-50"
-                        onClick={() => setActiveCall(c)}
-                      >
-                        <td className="py-3">{c.id}</td>
-                        <td>{c.expected}</td>
-                        <td>{c.actual}</td>
-                        <td>
-                          <Badge status={c.status} />
-                        </td>
+                  <thead className="text-left text-slate-400"><tr><th>Call</th><th>Expected</th><th>Actual</th><th>Status</th></tr></thead>
+                  <tbody className="text-slate-200">
+                    {tenCalls.map(c => (
+                      <tr key={c.id} className="border-t border-white/5 hover:bg-white/5 transition-colors cursor-pointer" onClick={() => setActiveCall(c)}>
+                        <td className="py-4 font-medium">{c.id}</td><td>{c.expected}</td><td>{c.actual}</td><td><Badge status={c.status} /></td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-
-              <DrilldownModal call={activeCall} onClose={() => setActiveCall(null)} />
+              {activeCall && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={() => setActiveCall(null)}>
+                  <div className="w-full max-w-3xl rounded-3xl border border-white/10 bg-[#0c1830] p-8 shadow-2xl" onClick={e => e.stopPropagation()}>
+                    <h3 className="text-2xl font-bold mb-4">{activeCall.id} Drilldown</h3>
+                    <div className="space-y-4">
+                      {candidateQuotesMock.map((q, i) => (
+                        <div key={i} className="p-4 rounded-xl bg-white/5 border border-white/10">
+                          <p className="italic text-slate-300 mb-2">"{q.quote}"</p>
+                          <div className="flex gap-2"><Badge status={q.signalA ? "TRUE" : "FALSE"} /><Badge status={q.signalB ? "TRUE" : "FALSE"} /></div>
+                        </div>
+                      ))}
+                    </div>
+                    <button className="mt-8 px-6 py-3 bg-white/10 rounded-xl font-semibold hover:bg-white/15" onClick={() => setActiveCall(null)}>Close</button>
+                  </div>
+                </div>
+              )}
             </div>
           );
         }
 
         /* =========================
-           OTHER PAGES
+           DETECTION RULE LIFECYCLE DASHBOARD
+        ========================= */
+
+        function DetectionRuleLifecycleDashboard() {
+          const flowSteps = [
+            { id: '1', title: 'Customer Detection Rule Content Raw', body: 'Initial behavioural rule content is defined from the customer requirement.' },
+            { id: '2', title: 'Pattern Classifier (Prompt)', body: 'The raw rule content is classified into a known conversational pattern family.', branch: { title: 'IF Pattern = OTHER', items: ['Pattern Ontology Expansion', 'Update Pattern Classification Library', 'Create New Pattern-Specific Engineering Prompt', 'Return to Step 3'] } },
+            { id: '3', title: 'Pattern Type Output', body: 'The behavioural pattern type is formally output for downstream rule engineering.' },
+            { id: '4', title: 'Pattern-Specific Engineering Prompt (Prompt)', body: 'The correct engineering framework is applied based on the classified pattern family.' },
+            { id: '5', title: 'Deterministic Rule Created v1', body: 'The first deterministic version of the rule is generated.' },
+            { id: '6', title: 'Keyword Hints Generation (Prompt)', body: 'Retrieval hints are generated to support Python-based pre-filtering before AI analysis.' },
+            { id: '7', title: 'Keywords Created (Python retrieval layer)', body: 'The retrieval layer uses generated keywords to surface candidate quotes efficiently.' },
+            { id: '7.5', title: 'Client Example Coverage Mapping (Prompt)', body: 'Client examples are injected in structured quote-level format.', note: 'NOTE — Client examples must be injected in structured quote-level format.', table: { headers: ['Example ID', 'Label', 'Speaker', 'Quote', 'Context'], rows: [['1', 'SHOULD_DETECT', 'Advisor', '“So I’ll reserve that now”', 'Booking secured'], ['2', 'SHOULD_NOT_DETECT', 'Advisor', '“You can call back later”', 'No reservation']] }, rules: ['Each row = single behavioural quote', 'Labels must be binary (SHOULD_DETECT / SHOULD_NOT_DETECT)', 'Do NOT provide full transcripts', 'Do NOT provide narrative summaries', 'Context optional but recommended'], ensures: ['Deterministic coverage audit', 'Structural comparison possible', 'Calibration loops reduced'] },
+            { id: '8', title: 'Test on 10 Calls', body: 'The rule is tested against a controlled sample of real conversations.' },
+            { id: '9', title: 'Mismatch Identified', body: 'Observed output is compared to expected behaviour and mismatches are isolated.' },
+            { id: '10', title: 'Calibration Mismatch Diagnosis (Prompt)', body: 'A structured diagnosis identifies whether the issue is retrieval, signal, qualification, or policy-related.', branch: { title: 'IF Policy Ambiguity', items: ['QUERY_FOR_MANAGER', 'Manager Decision', 'Return to Step 11 OR Close'] } },
+            { id: '11', title: 'Lever Adjustment in Isolation', body: 'Only one calibration lever is adjusted at a time to preserve deterministic stability.' },
+            { id: '11.5', title: 'Pattern Library Update', body: 'If structural coverage is expanded, the pattern library is updated manually.', helper: '(if structural coverage expanded)' },
+            { id: '12', title: 'Deterministic Rule Created v1.1', body: 'An updated rule version is generated after the isolated calibration change.' },
+            { id: '13', title: 'Re-run Test', body: 'The updated rule is re-tested against the sample set.', repeat: 'Repeat calibration loop until stable' },
+            { id: '14', title: 'Detection Sign-off Report', body: 'Final validated rule is approved for production use.' },
+          ];
+
+          return (
+            <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+              <div className="mb-8 rounded-[28px] border border-white/10 bg-gradient-to-br from-[#0c1830] via-[#091426] to-[#07101d] p-8 shadow-2xl">
+                <div className="inline-flex rounded-full border border-pink-400/20 bg-pink-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-pink-200">Metrix Rule Builder Flow</div>
+                <h1 className="mt-4 text-3xl font-semibold tracking-tight text-white mb-2">Detection Rule Calibration Lifecycle</h1>
+                <p className="text-slate-400">A visual flow-chart of how raw detection content becomes a calibrated, sign-off-ready rule.</p>
+              </div>
+              <div className="space-y-4">
+                {flowSteps.map((step, index) => (
+                  <div key={step.id}>
+                    <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-6 shadow-xl backdrop-blur relative">
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-pink-400/20 bg-pink-500/10 text-sm font-bold text-pink-200 shadow-[0_0_20px_rgba(236,72,153,0.12)]">{step.id}</div>
+                        <div className="min-w-0 flex-1">
+                          <h2 className="text-lg font-semibold text-white">{step.title}</h2>
+                          {step.helper && <div className="mt-1 text-xs uppercase tracking-[0.18em] text-slate-500">{step.helper}</div>}
+                          <p className="mt-3 text-sm leading-6 text-slate-300">{step.body}</p>
+                          {step.note && <div className="mt-4 rounded-2xl border border-amber-400/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">{step.note}</div>}
+                          {step.branch && (
+                            <div className="mt-4 rounded-2xl border border-fuchsia-400/20 bg-fuchsia-500/5 p-4">
+                              <div className="text-[10px] font-semibold uppercase tracking-[0.15em] text-fuchsia-300 mb-3">{step.branch.title}</div>
+                              <div className="space-y-2">
+                                {step.branch.items.map((item, idx) => (
+                                  <div key={item} className="flex items-center gap-3 rounded-xl border border-white/5 bg-white/5 px-3 py-2 text-sm text-slate-300">
+                                    <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/10 text-[10px] font-bold">{idx + 1}</div>
+                                    <span>{item}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {step.table && (
+                            <div className="mt-5 overflow-hidden rounded-2xl border border-white/10 bg-black/20">
+                              <div className="overflow-x-auto">
+                                <table className="min-w-full text-xs text-left">
+                                  <thead className="bg-white/5 text-slate-400"><tr>{step.table.headers.map(h => <th key={h} className="px-4 py-3 font-medium">{h}</th>)}</tr></thead>
+                                  <tbody>{step.table.rows.map((r, i) => <tr key={i} className="border-t border-white/5 text-slate-300">{r.map((c, j) => <td key={j} className="px-4 py-3">{c}</td>)}</tr>)}</tbody>
+                                </table>
+                              </div>
+                            </div>
+                          )}
+                          {step.rules && (
+                            <div className="mt-5 grid gap-4 lg:grid-cols-2">
+                                <div className="p-4 rounded-2xl border border-white/10 bg-white/5 h-full">
+                                    <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3">Rules</div>
+                                    <div className="space-y-2">{step.rules.map(r => <div key={r} className="text-sm text-slate-300 flex items-start gap-2"><div className="w-1 h-1 rounded-full bg-pink-500 mt-2 shrink-0"></div>{r}</div>)}</div>
+                                </div>
+                                <div className="p-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 h-full">
+                                    <div className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 mb-3">This Ensures</div>
+                                    <div className="space-y-2">{step.ensures.map(e => <div key={e} className="text-sm text-emerald-100 flex items-start gap-2"><div className="w-1 h-1 rounded-full bg-emerald-400 mt-2 shrink-0"></div>{e}</div>)}</div>
+                                </div>
+                            </div>
+                          )}
+                          {step.repeat && <div className="mt-4 rounded-2xl border border-sky-400/20 bg-sky-500/10 px-4 py-3 text-sm text-sky-100 font-medium inline-flex items-center gap-2"><span className="animate-pulse">🔄</span>{step.repeat}</div>}
+                        </div>
+                      </div>
+                    </div>
+                    {index < flowSteps.length - 1 && (
+                      <div className="flex justify-center py-2 opacity-30"><div className="h-10 w-px bg-gradient-to-b from-pink-500/50 to-transparent"></div></div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        }
+
+        /* =========================
+           OTHER PAGES (LEGACY/RE-STYLED)
         ========================= */
 
         function PatternLibraryPage() {
@@ -519,36 +386,21 @@
             ["Recommendation Pattern", "Ready", "Advice, product suggestions"],
             ["Commitment / Next Step", "Ready", "Reservations, callbacks, follow-up"],
             ["Benefit Link Pattern", "Ready", "Feature → outcome explanation"],
-            ["Information Statement Pattern", "Missing", "Customer fact statements"],
-            ["Confirmation Pattern", "Missing", "Advisor restatement / confirmation"],
-            ["Acknowledgement Pattern", "Missing", "Short listening signals"],
-            ["Objection Pattern", "Missing", "Customer hesitation / resistance"],
-            ["Assurance Pattern", "Missing", "Risk reduction / reassurance"],
-            ["Recap Pattern", "Missing", "Summary / next-step recap"],
             ["OTHER", "Dynamic", "New ontology expansion path"],
           ];
-
           return (
-            <div className="p-10">
-              <h1 className="text-2xl font-bold">Pattern Classification Library</h1>
-              <p className="mt-2 text-slate-500">Current pattern families available to the classifier and engineering system.</p>
-              <div className="mt-6 rounded-xl border bg-white p-6">
-                <table className="w-full text-sm">
-                  <thead className="text-left text-slate-500">
-                    <tr>
-                      <th>Pattern Family</th>
-                      <th>Status</th>
-                      <th>Purpose</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rows.map((row) => (
-                      <tr key={row[0]} className="border-t">
-                        <td className="py-3 font-medium">{row[0]}</td>
-                        <td>
-                          <Badge status={row[1] === "Ready" ? "Correct" : row[1] === "Missing" ? "Mismatch" : "Manager Query"} />
-                        </td>
-                        <td className="text-slate-600">{row[2]}</td>
+            <div className="p-10 max-w-4xl">
+              <h1 className="text-3xl font-bold tracking-tight mb-2">Pattern Classification Library</h1>
+              <p className="text-slate-400 mb-8">Current pattern families available to the classifier and engineering system.</p>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] overflow-hidden">
+                <table className="w-full text-sm text-left">
+                  <thead className="bg-white/5 text-slate-400"><tr><th className="px-6 py-4">Pattern Family</th><th className="px-6 py-4">Status</th><th className="px-6 py-4">Purpose</th></tr></thead>
+                  <tbody className="text-slate-200">
+                    {rows.map(row => (
+                      <tr key={row[0]} className="border-t border-white/5">
+                        <td className="px-6 py-4 font-semibold">{row[0]}</td>
+                        <td className="px-6 py-4"><Badge status={row[1] === "Ready" ? "Ready" : "Dynamic"} /></td>
+                        <td className="px-6 py-4 text-slate-400">{row[2]}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -559,42 +411,21 @@
         }
 
         function LeverMatrixPage() {
-          const rows = [
-            ["Word List Expansion", "Rule doesn't recognise a word that means the same thing", "I discovered you online", "Add discover to discovery verbs"],
-            ["New Word Category", "Rule doesn't recognise a type of wording", "I drove past the site", "Add PASSING_VERB group"],
-            ["New Sentence Structure", "People are saying the same thing in a different way", "Was it online you saw us?", "Add confirmation question pattern"],
-            ["Generic Object Words", "People say it / that / here instead of the business name", "Where did you find that?", "Allow it / that / this"],
-            ["Word Order Variation", "The right words are there but in the wrong order", "Did you see us online?", "Allow reversed token order"],
-            ["Conversation Spread Across Turns", "Parts of the signal appear across multiple lines", "Customer says source → advisor replies later", "Allow within two turns"],
-            ["Acknowledgement Style", "Advisor confirms without repeating the source", "Ah true", "Add acknowledgement tokens"],
-            ["Rule Too Strict", "Rule requires something unnecessary", "Requiring 'us' in discovery question", "Remove that requirement"],
-          ];
-
           return (
-            <div className="p-10">
-              <h1 className="text-2xl font-bold">Calibration Lever Matrix</h1>
-              <p className="mt-2 text-slate-500">Plain-English reference for what kind of rule adjustment is needed during calibration.</p>
-              <div className="mt-6 rounded-xl border bg-white p-6">
-                <table className="w-full text-sm">
-                  <thead className="text-left text-slate-500">
-                    <tr>
-                      <th>Lever</th>
-                      <th>Meaning</th>
-                      <th>Example Problem</th>
-                      <th>Example Fix</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rows.map((row) => (
-                      <tr key={row[0]} className="border-t">
-                        <td className="py-3 font-medium text-pink-700">{row[0]}</td>
-                        <td className="text-slate-600">{row[1]}</td>
-                        <td className="text-slate-600">{row[2]}</td>
-                        <td className="text-slate-600">{row[3]}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+            <div className="p-10 max-w-4xl">
+              <h1 className="text-3xl font-bold tracking-tight mb-2">Calibration Lever Matrix</h1>
+              <p className="text-slate-400 mb-8">Plain-English reference for what kind of rule adjustment is needed.</p>
+              <div className="grid gap-4">
+                {[
+                    ["Word List Expansion", "Add synonyms like 'discover' to discovery verbs."],
+                    ["New Sentence Structure", "Add confirmation question pattern for varying order."],
+                    ["Generic Object Words", "Allow 'it' or 'that' instead of business name."]
+                ].map(row => (
+                  <div key={row[0]} className="p-6 rounded-2xl border border-white/10 bg-white/[0.04]">
+                    <div className="text-pink-400 font-bold text-sm uppercase tracking-widest mb-1">{row[0]}</div>
+                    <div className="text-white text-lg font-medium mb-1">{row[1]}</div>
+                  </div>
+                ))}
               </div>
             </div>
           );
@@ -605,13 +436,13 @@
         ========================= */
 
         function MetrixCalibrationWorkbench() {
-          const [page, setPage] = useState("Onboarding Wizard");
+          const [page, setPage] = useState("Detection Flow");
 
           return (
-            <div className="flex min-h-screen bg-slate-50">
+            <div className="flex min-h-screen bg-[#06101d] text-white">
               <Sidebar page={page} setPage={setPage} />
-
-              <div className="flex-1">
+              <div className="flex-1 overflow-y-auto">
+                {page === "Detection Flow" && <DetectionRuleLifecycleDashboard />}
                 {page === "Onboarding Wizard" && <WizardPage />}
                 {page === "Dashboard" && <DashboardPage />}
                 {page === "Pattern Library" && <PatternLibraryPage />}
@@ -621,8 +452,10 @@
           );
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<MetrixCalibrationWorkbench />);
+        window.addEventListener('DOMContentLoaded', () => {
+          const root = ReactDOM.createRoot(document.getElementById('root'));
+          root.render(<MetrixCalibrationWorkbench />);
+        });
     </script>
 </body>
 </html>
