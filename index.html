@@ -784,290 +784,255 @@
         ========================= */
 
         function CalibrationLogsPage() {
-          const logs = [
-            {
-              version: "v1.2",
-              runs: [
-                {
-                  id: "Run 2",
-                  step8: {
-                    ruleVersion: "v1.1",
-                    testSetId: "TS-2024-03",
-                    totalTested: 10,
-                    expectedDetect: 6,
-                    actualDetect: 4,
-                    fnCount: 2,
-                    fpCount: 0,
-                    accuracy: "80%",
-                    coverage: "72%",
-                    fnList: ["Call 02: 'I'll get back to you.'", "Call 06: 'We'll have a look.'"],
-                    fpList: []
-                  },
-                  step9: {
-                    caseId: "CC-102",
-                    ruleId: "R-77",
-                    ruleVersion: "v1.1",
-                    callId: "Call 02",
-                    quote: "I'll get back to you.",
-                    expected: "Detect",
-                    actual: "Not Detect",
-                    type: "FN"
-                  },
-                  step10: {
-                    failureLayer: "Signal Extraction",
-                    failedSignal: "Signal B",
-                    rootCause: "Pattern Type - Delay Statement",
-                    leverCandidate: "Structural Pattern Coverage",
-                    governance: "None"
-                  },
-                  step11: {
-                    lever: "Structural Pattern Coverage",
-                    tokenChanges: "Added 'get back to you' as Delay Indicator",
-                    patternChanges: "Expanded Pattern 1 to include future-tense commitments",
-                    logicChanges: "None",
-                    scope: "Pattern level"
-                  },
-                  step12: {
-                    prevVersion: "v1.1",
-                    newVersion: "v1.2",
-                    summary: "Fixed FN in Call 02/06 by expanding structural pattern coverage for delay statements.",
-                    resolvedCases: "CC-102, CC-106"
-                  },
-                  step13: {
-                    fnResolved: 2,
-                    fpResolved: 0,
-                    newFn: 0,
-                    newFp: 0,
-                    netDelta: "+20%"
-                  },
-                  step14: {
-                    finalAccuracy: "90%",
-                    finalCoverage: "92%",
-                    totalRuns: 2,
-                    totalStructuralChanges: 2,
-                    patternAdditions: 3,
-                    governanceRequired: 0,
-                    stabilityScore: "85"
-                  }
-                }
-              ]
+          const run = {
+            id: "Run 2",
+            step8: {
+              ruleVersion: "v1.1",
+              testSetId: "TS-2024-03",
+              totalTested: 10,
+              expectedDetect: 6,
+              actualDetect: 4,
+              fnCount: 2,
+              fpCount: 0,
+              accuracy: "80%",
+              coverage: "72%",
+              fnList: ["Call 02: 'I'll get back to you.'", "Call 06: 'We'll have a look.'"],
+              fpList: []
+            },
+            step9: {
+              caseId: "CC-102",
+              ruleId: "R-77",
+              ruleVersion: "v1.1",
+              callId: "Call 02",
+              quote: "I'll get back to you.",
+              expected: "Detect",
+              actual: "Not Detect",
+              type: "FN"
+            },
+            step10: {
+              failureLayer: "Signal Extraction",
+              failedSignal: "Signal B",
+              rootCause: "Pattern Type - Delay Statement",
+              leverCandidate: "Structural Pattern Coverage",
+              governance: "None"
+            },
+            step11: {
+              lever: "Structural Pattern Coverage",
+              tokenChanges: "Added 'get back to you' as Delay Indicator",
+              patternChanges: "Expanded Pattern 1 to include future-tense commitments",
+              logicChanges: "None",
+              scope: "Pattern level"
+            },
+            step12: {
+              prevVersion: "v1.1",
+              newVersion: "v1.2",
+              summary: "Fixed FN in Call 02/06 by expanding structural pattern coverage for delay statements.",
+              resolvedCases: "CC-102, CC-106"
+            },
+            step13: {
+              fnResolved: 2,
+              fpResolved: 0,
+              newFn: 0,
+              newFp: 0,
+              netDelta: "+20%"
+            },
+            step14: {
+              finalAccuracy: "90%",
+              finalCoverage: "92%",
+              totalRuns: 2,
+              totalStructuralChanges: 2,
+              patternAdditions: 3,
+              governanceRequired: 0,
+              stabilityScore: "85"
             }
-          ];
+          };
 
           return (
-            <div className="space-y-12 p-10 max-w-6xl">
-              <div>
-                <h1 className="text-3xl font-bold text-slate-900">Calibration Logs</h1>
-                <p className="mt-2 text-slate-500 italic">🧠 First Principle: Logging tracks Performance Evolution, Structural Rule Changes, and Decision Rationale.</p>
+            <div className="space-y-12 p-10 max-w-4xl mx-auto">
+              <div className="border-b border-slate-200 pb-8">
+                <h1 className="text-4xl font-black text-slate-900 tracking-tight">Calibration Logs</h1>
+                <p className="mt-4 text-slate-500 font-medium italic">🧠 First Principle: Calibration logging must track Detection Performance Evolution, Structural Rule Changes, and Decision Rationale.</p>
               </div>
 
-              {/* Evolution Chain */}
-              <div className="flex items-center gap-4 bg-white p-6 rounded-2xl border shadow-sm">
-                <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 mr-4">Rule Evolution Chain</div>
-                {["v1", "v1.1", "v1.2", "SIGNED OFF"].map((v, i) => (
-                  <React.Fragment key={v}>
-                    <div className={`px-4 py-2 rounded-lg font-bold text-sm ${v === "SIGNED OFF" ? 'bg-emerald-50 text-emerald-700 shadow-sm' : 'bg-pink-50 text-pink-700'}`}>
-                      {v}
-                    </div>
-                    {i < 3 && <div className="text-slate-300">→</div>}
-                  </React.Fragment>
-                ))}
+              {/* Dimensional Dimensions */}
+              <div className="grid grid-cols-3 gap-6">
+                <div className="bg-pink-50 border border-pink-100 p-6 rounded-2xl">
+                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-pink-600 mb-2">Dimension 1</div>
+                  <div className="text-sm font-bold text-pink-900 uppercase">Detection Performance Evolution</div>
+                </div>
+                <div className="bg-pink-50 border border-pink-100 p-6 rounded-2xl">
+                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-pink-600 mb-2">Dimension 2</div>
+                  <div className="text-sm font-bold text-pink-900 uppercase">Structural Rule Changes</div>
+                </div>
+                <div className="bg-pink-50 border border-pink-100 p-6 rounded-2xl">
+                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-pink-600 mb-2">Dimension 3</div>
+                  <div className="text-sm font-bold text-pink-900 uppercase">Decision Rationale</div>
+                </div>
               </div>
 
-              {/* Step 8-14 Logs */}
-              <div className="space-y-10">
-                {logs[0].runs.map((run) => (
-                  <div key={run.id} className="space-y-6">
-                    <div className="flex items-center gap-3">
-                      <div className="h-px flex-1 bg-slate-200"></div>
-                      <h2 className="text-sm font-black text-slate-400 uppercase tracking-[0.2em]">{run.id} — CALIBRATION LOOP</h2>
-                      <div className="h-px flex-1 bg-slate-200"></div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {/* Step 8 */}
-                      <div className="bg-white p-6 rounded-xl border shadow-sm hover:border-pink-200 transition-colors">
-                        <div className="text-[10px] font-black uppercase tracking-widest text-pink-600 mb-3 flex items-center gap-2">
-                           <div className="w-1.5 h-1.5 rounded-full bg-pink-500"></div>
-                           STEP 8 — Performance Snapshot
-                        </div>
-                        <div className="space-y-1 text-sm">
-                          <div className="flex justify-between"><span>Rule Version</span><span className="font-semibold">{run.step8.ruleVersion}</span></div>
-                          <div className="flex justify-between"><span>Test Set ID</span><span className="font-semibold text-slate-500">{run.step8.testSetId}</span></div>
-                          <div className="flex justify-between border-t border-slate-50 pt-1 mt-1"><span>Accuracy</span><span className="font-bold text-emerald-600">{run.step8.accuracy}</span></div>
-                          <div className="flex justify-between"><span>Coverage</span><span className="font-bold text-pink-600">{run.step8.coverage}</span></div>
-                        </div>
-                      </div>
-
-                      {/* Step 9 */}
-                      <div className="bg-white p-6 rounded-xl border shadow-sm hover:border-pink-200 transition-colors">
-                        <div className="text-[10px] font-black uppercase tracking-widest text-pink-600 mb-3 flex items-center gap-2">
-                           <div className="w-1.5 h-1.5 rounded-full bg-pink-500"></div>
-                           STEP 9 — Mismatch Register
-                        </div>
-                        <div className="space-y-1 text-sm">
-                          <div className="flex justify-between"><span>Case ID</span><span className="font-semibold">{run.step9.caseId}</span></div>
-                          <div className="flex justify-between"><span>Call ID</span><span className="font-semibold">{run.step9.callId}</span></div>
-                          <div className="flex justify-between"><span>Type</span><span className="font-bold text-rose-600">{run.step9.type}</span></div>
-                          <div className="mt-2 text-[11px] bg-slate-50 p-2 rounded text-slate-600 italic">"{run.step9.quote}"</div>
-                        </div>
-                      </div>
-
-                      {/* Step 10 */}
-                      <div className="bg-white p-6 rounded-xl border shadow-sm hover:border-pink-200 transition-colors">
-                        <div className="text-[10px] font-black uppercase tracking-widest text-pink-600 mb-3 flex items-center gap-2">
-                           <div className="w-1.5 h-1.5 rounded-full bg-pink-500"></div>
-                           STEP 10 — Mismatch Diagnosis
-                        </div>
-                        <div className="space-y-1 text-sm">
-                          <div className="flex justify-between"><span>Failure Layer</span><span className="font-semibold">{run.step10.failureLayer}</span></div>
-                          <div className="flex justify-between"><span>Root Cause</span><span className="font-semibold text-slate-500 text-xs">{run.step10.rootCause}</span></div>
-                          <div className="flex justify-between"><span>Lever</span><span className="font-semibold text-pink-600">{run.step10.leverCandidate}</span></div>
-                        </div>
-                      </div>
-
-                      {/* Step 11 */}
-                      <div className="bg-white p-6 rounded-xl border shadow-sm lg:col-span-2 hover:border-pink-200 transition-colors">
-                         <div className="text-[10px] font-black uppercase tracking-widest text-pink-600 mb-1 flex items-center gap-2">
-                           <div className="w-1.5 h-1.5 rounded-full bg-pink-500"></div>
-                           STEP 11 — Structural Change Log
-                        </div>
-                        <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-sm mt-3">
-                          <div className="space-y-4">
-                            <div><span className="text-[10px] text-slate-400 block uppercase font-black tracking-widest mb-1">Lever Used</span><div className="font-bold text-slate-800">{run.step11.lever}</div></div>
-                            <div><span className="text-[10px] text-slate-400 block uppercase font-black tracking-widest mb-1">Token Changes</span><div className="text-slate-600 text-xs">{run.step11.tokenChanges}</div></div>
-                          </div>
-                          <div className="space-y-4">
-                            <div><span className="text-[10px] text-slate-400 block uppercase font-black tracking-widest mb-1">Scope of Change</span><span className="bg-pink-100 text-pink-700 px-2 py-0.5 rounded text-[10px] font-black uppercase">{run.step11.scope}</span></div>
-                            <div><span className="text-[10px] text-slate-400 block uppercase font-black tracking-widest mb-1">Pattern Changes</span><div className="text-slate-600 text-xs">{run.step11.patternChanges}</div></div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Step 12 */}
-                      <div className="bg-white p-6 rounded-xl border shadow-sm hover:border-pink-200 transition-colors">
-                        <div className="text-[10px] font-black uppercase tracking-widest text-pink-600 mb-3 flex items-center gap-2">
-                           <div className="w-1.5 h-1.5 rounded-full bg-pink-500"></div>
-                           STEP 12 — Version Entry
-                        </div>
-                        <div className="space-y-1 text-sm">
-                          <div className="flex justify-between"><span>New Version</span><span className="font-bold text-pink-600">{run.step12.newVersion}</span></div>
-                          <p className="mt-2 text-[11px] text-slate-500 leading-relaxed border-t border-slate-50 pt-2">{run.step12.summary}</p>
-                        </div>
-                      </div>
-
-                      {/* Step 13 */}
-                      <div className="bg-white p-6 rounded-xl border shadow-sm hover:border-pink-200 transition-colors">
-                        <div className="text-[10px] font-black uppercase tracking-widest text-pink-600 mb-3 flex items-center gap-2">
-                           <div className="w-1.5 h-1.5 rounded-full bg-pink-500"></div>
-                           STEP 13 — Re-run Delta
-                        </div>
-                        <div className="space-y-1 text-sm">
-                          <div className="flex justify-between"><span>FN Resolved</span><span className="text-emerald-600 font-bold">{run.step13.fnResolved}</span></div>
-                          <div className="flex justify-between border-t border-slate-50 pt-1 mt-1"><span>Net Accuracy Delta</span><span className="text-emerald-600 font-bold">{run.step13.netDelta}</span></div>
-                        </div>
-                      </div>
-
-                      {/* Step 14 */}
-                      <div className="bg-white p-6 rounded-xl border shadow-sm lg:col-span-2 hover:border-pink-200 transition-colors">
-                        <div className="text-[10px] font-black uppercase tracking-widest text-pink-600 mb-3 flex items-center gap-2">
-                           <div className="w-1.5 h-1.5 rounded-full bg-pink-500"></div>
-                           STEP 14 — Stabilization Record
-                        </div>
-                        <div className="grid grid-cols-3 gap-4 text-sm">
-                          <div className="flex flex-col">
-                            <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Final Accuracy</span>
-                            <span className="font-bold text-emerald-600 text-lg">{run.step14.finalAccuracy}</span>
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Stability Score</span>
-                            <span className="font-bold text-slate-900 text-lg">{run.step14.stabilityScore}</span>
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Total Runs</span>
-                            <span className="font-bold text-slate-900 text-lg">{run.step14.totalRuns}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+              {/* Lifecycle Section */}
+              <div className="bg-white border rounded-[2rem] p-10 shadow-sm space-y-10">
+                <div className="flex items-center justify-between border-b pb-6">
+                  <div>
+                    <h2 className="text-2xl font-black text-slate-900">Calibration Run Record</h2>
+                    <p className="text-slate-500 text-sm mt-1">Rule Lifecycle: v1 → v1.1 → v1.2 → SIGNED OFF</p>
                   </div>
-                ))}
-              </div>
-
-              {/* Critical Logs */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-slate-900 p-8 rounded-[2rem] text-white shadow-2xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-pink-500/10 rounded-full -mr-12 -mt-12 blur-2xl group-hover:bg-pink-500/20 transition-colors"></div>
-                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-pink-500 mb-6 flex items-center justify-between">
-                    Pattern Library Growth
-                    <span className="text-slate-600 font-mono tracking-tighter">01</span>
-                  </h3>
-                  <div className="space-y-6">
-                    <div className="border-l border-pink-500/30 pl-4">
-                      <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">New Pattern Added</div>
-                      <div className="text-sm font-bold text-white mb-1 tracking-tight">Conditional Callback</div>
-                      <div className="text-[11px] text-slate-400 italic">"If I don't hear back, I'll call..."</div>
-                    </div>
-                    <div className="border-l border-pink-500/30 pl-4 opacity-50">
-                      <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Token Group Expansion</div>
-                      <div className="text-sm font-bold text-white mb-1 tracking-tight">Delay Indicators</div>
-                      <div className="text-[11px] text-slate-400 italic font-mono uppercase">Token: "Word with her"</div>
-                    </div>
-                  </div>
+                  <div className="bg-pink-100 text-pink-700 px-4 py-2 rounded-full font-bold text-sm">Active Run: {run.id}</div>
                 </div>
 
-                <div className="bg-slate-900 p-8 rounded-[2rem] text-white shadow-2xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-pink-500/10 rounded-full -mr-12 -mt-12 blur-2xl group-hover:bg-pink-500/20 transition-colors"></div>
-                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-pink-500 mb-6 flex items-center justify-between">
-                    Lever Effectiveness
-                    <span className="text-slate-600 font-mono tracking-tighter">02</span>
-                  </h3>
+                {/* Step-Level Logging */}
+                <div className="space-y-12">
+                  
+                  {/* Step 8 */}
                   <div className="space-y-4">
-                    <div className="space-y-2">
-                       <div className="flex justify-between text-[11px] font-bold"><span>Structural Pattern</span><span className="text-emerald-400">88% Effectiveness</span></div>
-                       <div className="h-1.5 w-full bg-white/5 rounded-full"><div className="h-full w-[88%] bg-emerald-500 rounded-full"></div></div>
-                    </div>
-                    <div className="space-y-2">
-                       <div className="flex justify-between text-[11px] font-bold text-slate-400"><span>Token Expansion</span><span className="text-pink-400">62% Effectiveness</span></div>
-                       <div className="h-1.5 w-full bg-white/5 rounded-full"><div className="h-full w-[62%] bg-pink-500 rounded-full shadow-[0_0_10px_rgba(236,72,153,0.3)]"></div></div>
-                    </div>
-                    <div className="mt-6 p-3 bg-white/5 rounded-xl border border-white/10 text-[10px] leading-relaxed text-slate-400">
-                      ⭐ <span className="text-white font-bold">INSIGHT:</span> Structural changes reduce regression risk by 4.2x vs token-level hints.
+                    <h3 className="text-lg font-black text-slate-800 uppercase tracking-widest border-l-4 border-pink-500 pl-4">STEP 8 — Test on 10 Calls</h3>
+                    <div className="text-sm text-slate-500 italic mb-4">Detection Performance Snapshot | Baseline established</div>
+                    <ul className="grid grid-cols-2 gap-x-12 gap-y-2 pl-4">
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Rule Version</span> <span className="font-bold text-slate-900">{run.step8.ruleVersion}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Test Set ID</span> <span className="font-bold text-slate-900">{run.step8.testSetId}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Total Calls Tested</span> <span className="font-bold text-slate-900">{run.step8.totalTested}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Total Expected Detect</span> <span className="font-bold text-slate-900">{run.step8.expectedDetect}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Total Actual Detect</span> <span className="font-bold text-slate-900">{run.step8.actualDetect}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• False Negatives Count</span> <span className="font-bold text-rose-600">{run.step8.fnCount}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• False Positives Count</span> <span className="font-bold text-red-600">{run.step8.fpCount}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Accuracy %</span> <span className="font-bold text-emerald-600">{run.step8.accuracy}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Coverage %</span> <span className="font-bold text-pink-600">{run.step8.coverage}</span></li>
+                    </ul>
+                    <div className="mt-4 pl-4 space-y-2">
+                       <div className="text-[10px] font-black text-rose-500 uppercase tracking-widest">FN List (Call ID + Quote)</div>
+                       {run.step8.fnList.map((fn, i) => <div key={i} className="text-xs font-semibold text-slate-700 bg-slate-50 p-2 rounded-lg">• {fn}</div>)}
                     </div>
                   </div>
-                </div>
 
-                <div className="bg-slate-900 p-8 rounded-[2rem] text-white shadow-2xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-pink-500/10 rounded-full -mr-12 -mt-12 blur-2xl group-hover:bg-pink-500/20 transition-colors"></div>
-                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-pink-500 mb-6 flex items-center justify-between">
-                    Governance Escalation
-                    <span className="text-slate-600 font-mono tracking-tighter">03</span>
-                  </h3>
-                  <div className="space-y-4">
-                     <div className="p-4 rounded-xl border border-white/5 bg-white/5 text-xs text-slate-400">
-                        <div className="font-bold text-white mb-2 uppercase tracking-widest text-[10px]">Active Decision Queue</div>
-                        <div className="flex items-center gap-3">
-                           <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                           <span>All policy ambiguities resolved for v1.2</span>
-                        </div>
-                     </div>
-                     <div className="text-[10px] leading-relaxed text-slate-500 px-2 italic">
-                       "Manager sign-off required for changes affecting Signal D logic gate."
-                     </div>
+                  {/* Step 9 */}
+                  <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <h3 className="text-lg font-black text-slate-800 uppercase tracking-widest border-l-4 border-pink-500 pl-4">STEP 9 — Mismatch Identified</h3>
+                    <div className="text-sm text-slate-500 italic mb-4">Mismatch Register Entry | Calibration Case Created</div>
+                    <ul className="space-y-2 pl-4 max-w-md">
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Case ID</span> <span className="font-bold text-slate-900">{run.step9.caseId}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Rule ID</span> <span className="font-bold text-slate-900">{run.step9.ruleId}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Rule Version</span> <span className="font-bold text-slate-900">{run.step9.ruleVersion}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Call ID</span> <span className="font-bold text-slate-900">{run.step9.callId}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Quote</span> <span className="font-bold text-slate-900 italic">"{run.step9.quote}"</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Expected Label</span> <span className="font-bold text-emerald-600">{run.step9.expected}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Actual Output</span> <span className="font-bold text-rose-600">{run.step9.actual}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Mismatch Type</span> <span className="font-bold text-rose-600">{run.step9.type}</span></li>
+                    </ul>
                   </div>
+
+                  {/* Step 10 */}
+                  <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <h3 className="text-lg font-black text-slate-800 uppercase tracking-widest border-l-4 border-pink-500 pl-4">STEP 10 — Calibration Mismatch Diagnosis</h3>
+                    <div className="text-sm text-slate-500 italic mb-4">Diagnosis Layer Record | Identification of failure layer</div>
+                    <ul className="space-y-2 pl-4 max-w-md">
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Case ID</span> <span className="font-bold text-slate-900 text-xs">{run.step9.caseId}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Failure Layer</span> <span className="font-bold text-pink-600">{run.step10.failureLayer}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Failed Signal</span> <span className="font-bold text-slate-900">{run.step10.failedSignal}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Root Cause Diagnosis</span> <span className="font-bold text-slate-900 text-xs uppercase tracking-tighter">{run.step10.rootCause}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Lever Candidate</span> <span className="font-bold text-pink-600">{run.step10.leverCandidate}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Governance Escalation flag</span> <span className="font-bold text-slate-400 uppercase tracking-widest text-[10px]">{run.step10.governance}</span></li>
+                    </ul>
+                  </div>
+
+                  {/* Step 11 */}
+                  <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <h3 className="text-lg font-black text-slate-800 uppercase tracking-widest border-l-4 border-pink-500 pl-4">STEP 11 — Lever Adjustment in Isolation</h3>
+                    <div className="text-sm text-slate-500 italic mb-4">Structural Change Log | Traceable rule modification</div>
+                    <ul className="space-y-2 pl-4">
+                      <li className="flex justify-between border-b border-slate-50 pb-1 max-w-md"><span>• Calibration Lever Used</span> <span className="font-bold text-pink-600">{run.step11.lever}</span></li>
+                      <li className="mt-4"><span className="text-[10px] font-black uppercase tracking-widest text-slate-400">• Token Extraction Changes</span> <div className="text-sm font-semibold text-slate-700 bg-slate-50 p-3 rounded-xl mt-1">{run.step11.tokenChanges}</div></li>
+                      <li className="mt-4"><span className="text-[10px] font-black uppercase tracking-widest text-slate-400">• Structural Pattern Expansion</span> <div className="text-sm font-semibold text-slate-700 bg-slate-50 p-3 rounded-xl mt-1">{run.step11.patternChanges}</div></li>
+                      <li className="mt-4 max-w-md flex justify-between border-b border-slate-50 pb-1"><span>• Modification Scope</span> <span className="bg-pink-100 text-pink-700 px-2 py-0.5 rounded text-[10px] font-black uppercase">{run.step11.scope}</span></li>
+                    </ul>
+                  </div>
+
+                  {/* Step 12 */}
+                  <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <h3 className="text-lg font-black text-slate-800 uppercase tracking-widest border-l-4 border-pink-500 pl-4">STEP 12 — Version Entry Created</h3>
+                    <div className="text-sm text-slate-500 italic mb-4">Version Control Entry | Immutable version update</div>
+                    <ul className="space-y-2 pl-4 max-w-md">
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Previous Version</span> <span className="font-bold text-slate-400">{run.step12.prevVersion}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• New Rule Version</span> <span className="font-bold text-pink-600 text-lg">{run.step12.newVersion}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Delta Change Summary</span> <span className="font-bold text-slate-900 text-xs w-1/2 text-right">{run.step12.summary}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Resolved Case IDs</span> <span className="font-bold text-emerald-600">{run.step12.resolvedCases}</span></li>
+                    </ul>
+                  </div>
+
+                  {/* Step 13 */}
+                  <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <h3 className="text-lg font-black text-slate-800 uppercase tracking-widest border-l-4 border-pink-500 pl-4">STEP 13 — Re-run Test</h3>
+                    <div className="text-sm text-slate-500 italic mb-4">Post-Calibration Performance Snapshot | Regression verification</div>
+                    <ul className="grid grid-cols-2 gap-x-12 gap-y-2 pl-4">
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Previous Run Accuracy %</span> <span className="font-bold text-slate-400">80%</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• New Run Accuracy %</span> <span className="font-bold text-emerald-600">90%</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Net accuracy delta (+/-)</span> <span className="font-bold text-emerald-600">{run.step13.netDelta}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Previous FN Count Resolved</span> <span className="font-bold text-emerald-600">{run.step13.fnResolved}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• New FNs introduced</span> <span className="font-bold text-slate-900">{run.step13.newFn}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• New FPs introduced</span> <span className="font-bold text-slate-900">{run.step13.newFp}</span></li>
+                    </ul>
+                  </div>
+
+                  {/* Step 14 */}
+                  <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <h3 className="text-lg font-black text-slate-800 uppercase tracking-widest border-l-4 border-pink-500 pl-4">STEP 14 — Detection Sign-off Report</h3>
+                    <div className="text-sm text-slate-500 italic mb-4">Rule Stabilisation Record | Approval for production</div>
+                    <ul className="grid grid-cols-2 gap-x-12 gap-y-2 pl-4">
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Final Accuracy %</span> <span className="font-bold text-emerald-600 text-lg">{run.step14.finalAccuracy}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Final Coverage %</span> <span className="font-bold text-pink-600 text-lg">{run.step14.finalCoverage}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Stability Score (1-100)</span> <span className="font-bold text-slate-900 border border-slate-200 px-2 rounded-lg">{run.step14.stabilityScore}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Total Calibration Runs</span> <span className="font-bold text-slate-900">{run.step14.totalRuns}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Total Structural Changes</span> <span className="font-bold text-slate-900">{run.step14.totalStructuralChanges}</span></li>
+                      <li className="flex justify-between border-b border-slate-50 pb-1"><span>• Manual Governance Required</span> <span className="font-bold text-slate-900">{run.step14.governanceRequired}</span></li>
+                    </ul>
+                    <div className="mt-6 flex justify-center">
+                        <div className="bg-emerald-900 text-white px-10 py-4 rounded-2xl font-black uppercase tracking-[0.3em] shadow-xl transform hover:scale-105 transition-transform cursor-pointer border-t-4 border-emerald-400">
+                          Final Sign-Off Verified
+                        </div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
-              
-              {/* Long term value enablement section */}
-              <div className="mt-12 p-8 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center gap-8 group">
-                <div className="p-4 bg-pink-50 rounded-2xl group-hover:bg-pink-100 transition-colors">
-                  <svg className="w-10 h-10 text-pink-600 font-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                </div>
-                <div>
-                   <h4 className="text-sm font-black uppercase tracking-widest text-slate-900 mb-1">Enablement Engine</h4>
-                   <p className="text-xs text-slate-500 max-w-2xl leading-relaxed">This logging depth enables <span className="text-pink-600 font-bold">Calibration Automation</span>, Rule Complexity Prediction, and Investor-grade Moat Analytics for the Metrix ecosystem.</p>
-                </div>
+
+              {/* Additional Log Tracks */}
+              <div className="space-y-8 pb-20">
+                 <div className="bg-slate-900 p-10 rounded-[2.5rem] text-white shadow-2xl space-y-8">
+                    <h2 className="text-sm font-black text-pink-500 uppercase tracking-[0.4em] border-b border-white/10 pb-4">ADDITIONAL CRITICAL LOG TRACKERS</h2>
+                    
+                    <div className="grid md:grid-cols-3 gap-10">
+                       <div className="space-y-4">
+                          <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400">Pattern Library Growth</h4>
+                          <ul className="space-y-2 text-xs text-slate-300">
+                             <li className="flex gap-2"><span className="text-pink-500">•</span> <span>New Conversational Pattern added</span></li>
+                             <li className="flex gap-2"><span className="text-pink-500">•</span> <span>Token Group Expansion details</span></li>
+                             <li className="flex gap-2"><span className="text-pink-500">•</span> <span>Family inheritance logs</span></li>
+                          </ul>
+                       </div>
+                       <div className="space-y-4">
+                          <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400">Lever Effectiveness</h4>
+                          <ul className="space-y-2 text-xs text-slate-300">
+                             <li className="flex gap-2"><span className="text-pink-500">•</span> <span>Run reduction per lever type</span></li>
+                             <li className="flex gap-2"><span className="text-pink-500">•</span> <span>Regression risk per lever type</span></li>
+                             <li className="flex gap-2"><span className="text-pink-500">•</span> <span>Lever usage cross-rule analytics</span></li>
+                          </ul>
+                       </div>
+                       <div className="space-y-4">
+                          <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400">Governance Escalation</h4>
+                          <ul className="space-y-2 text-xs text-slate-300">
+                             <li className="flex gap-2"><span className="text-pink-500">•</span> <span>Manager Decision logs</span></li>
+                             <li className="flex gap-2"><span className="text-pink-500">•</span> <span>Policy Ambiguity resolution time</span></li>
+                             <li className="flex gap-2"><span className="text-pink-500">•</span> <span>Final Approver ID</span></li>
+                          </ul>
+                       </div>
+                    </div>
+
+                    <div className="pt-8 border-t border-white/5 flex items-center gap-6">
+                        <div className="h-2 w-2 rounded-full bg-pink-500 animate-pulse"></div>
+                        <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Long-Term Enablement Log Status: [ACTIVE]</div>
+                    </div>
+                 </div>
               </div>
+
             </div>
           );
         }
