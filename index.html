@@ -96,11 +96,11 @@
 
         function Sidebar({ page, setPage }) {
           const items = [
-            "Detection Flow",
             "Onboarding Wizard",
             "Dashboard",
             "Pattern Library",
             "Lever Matrix",
+            "Rule Creation Flow",
           ];
 
           return (
@@ -758,14 +758,14 @@
         ========================= */
 
         function MetrixCalibrationWorkbench() {
-          const [page, setPage] = useState("Detection Flow");
+          const [page, setPage] = useState("Onboarding Wizard");
 
           return (
             <div className="flex min-h-screen bg-slate-50">
               <Sidebar page={page} setPage={setPage} />
 
               <div className="flex-1 overflow-y-auto">
-                {page === "Detection Flow" && <DetectionRuleLifecycleDashboard />}
+                {page === "Rule Creation Flow" && <DetectionRuleLifecycleDashboard />}
                 {page === "Onboarding Wizard" && <WizardPage />}
                 {page === "Dashboard" && <DashboardPage />}
                 {page === "Pattern Library" && <PatternLibraryPage />}
