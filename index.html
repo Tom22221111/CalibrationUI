@@ -604,7 +604,7 @@
            MAIN
         ========================= */
 
-        export default function MetrixCalibrationWorkbench() {
+        function MetrixCalibrationWorkbench() {
           const [page, setPage] = useState("Onboarding Wizard");
 
           return (
@@ -621,8 +621,10 @@
           );
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<MetrixCalibrationWorkbench />);
+        window.addEventListener('DOMContentLoaded', () => {
+          const root = ReactDOM.createRoot(document.getElementById('root'));
+          root.render(<MetrixCalibrationWorkbench />);
+        });
     </script>
 </body>
 </html>
