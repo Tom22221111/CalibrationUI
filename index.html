@@ -31,27 +31,81 @@
            MOCK DATA
         ========================= */
 
-        const candidateQuotesMock = [
-          {
-            quote: "Yeah, well, I'm going to have a word with her, see what she thinks.",
-            signalA: false,
-            signalB: true,
-            signalC: false,
-          },
-          {
-            quote: "No, because I'll get back to you quickly.",
-            signalA: false,
-            signalB: true,
-            signalC: false,
-          },
-          {
-            quote:
-              "If I don't hear back after you spoke to your daughter, I'll give you a wee follow‑up call.",
-            signalA: false,
-            signalB: false,
-            signalC: true,
-          },
-        ];
+        const signalDiagnosticsMock = {
+          layers: [
+            {
+              id: "layer1",
+              title: "LAYER 1 — SIGNAL EXTRACTION",
+              signals: [
+                {
+                  id: "A",
+                  name: "Reservation Commitment",
+                  result: "FALSE",
+                  reasoning: "No quote in this set contains a customer agreement to reserve.",
+                },
+                {
+                  id: "B",
+                  name: "Reservation Declined / Not Secured",
+                  result: "TRUE",
+                  reasoning: {
+                    patterns: [
+                      {
+                        name: "Pattern 1 (Reservation Delay Statement)",
+                        details: "Detected in multiple segments.",
+                        quotes: [
+                          { text: "Yeah, well, I'm going to have a word with her, see what she thinks.", segment: "106" },
+                          { text: "No, because I'll get back to you quite quickly.", segment: "109" }
+                        ],
+                        tokens: ['"word with her" (Person Reference)', '"thinks" (Delay Indicator)', '"get back to you" (Delay Indicator)']
+                      }
+                    ]
+                  }
+                },
+                {
+                  id: "C",
+                  name: "Callback Arrangement",
+                  result: "TRUE",
+                  reasoning: {
+                    patterns: [
+                      {
+                        name: "Pattern 5 (Conditional Callback Commitment)",
+                        details: "Detected in Segment 114.",
+                        quotes: [
+                          { text: "If I don't hear back for you after you spoke to your daughter, I'll give you a wee follow-up call in [REDACTED].", segment: "114" }
+                        ],
+                        tokens: [
+                          { type: "CONDITIONAL_TRIGGER", text: "after you spoke to" },
+                          { type: "CALLBACK_VERB", text: "follow-up call" },
+                          { type: "CUSTOMER_REFERENCE", text: "you" }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  id: "D",
+                  name: "Email Follow-Up",
+                  result: "FALSE",
+                  reasoning: "No email-specific action (\"send email\", \"forward details\") is present in this specific set of 5 candidate quotes.",
+                }
+              ]
+            },
+            {
+              id: "layer2",
+              title: "LAYER 2 — QUALIFICATION GATE",
+              logicPath: [
+                { step: "1", query: "Signal A = TRUE?", response: "No (FALSE)." },
+                { step: "2", query: "Failure Condition: ELSE IF Signal B = TRUE AND Signal C = FALSE?", response: "No (Both B and C are TRUE)." },
+                { step: "3", query: "Email Clarification Rule: ELSE IF Signal B = TRUE AND Signal C = TRUE?", response: "Yes." }
+              ],
+              result: {
+                label: "rule_present",
+                value: "FALSE",
+                explanation: "Although the reservation was not secured (Signal B), the Advisor successfully arranged a conditional follow-up call (Signal C). Under this logic, a callback \"passes\" the rule, even if an email wasn't offered or detected in this specific segment."
+              }
+            }
+          ]
+        };
 
         const tenCalls = [
           { id: "Call 01", expected: "Detect", actual: "Detect", status: "Correct" },
@@ -298,47 +352,112 @@
           if (!call) return null;
 
           return (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={onClose}>
-              <div className="h-[90vh] w-[1100px] overflow-y-auto rounded-xl bg-slate-900 p-8 text-white relative" onClick={e => e.stopPropagation()}>
-                <div className="mb-6 flex justify-between">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80" onClick={onClose}>
+              <div className="h-[90vh] w-[1100px] overflow-y-auto rounded-xl bg-slate-900 p-12 text-slate-100 relative shadow-2xl" onClick={e => e.stopPropagation()}>
+                <div className="mb-10 flex justify-between items-start border-b border-slate-800 pb-8">
                   <div>
-                    <div className="text-sm text-slate-400">Mismatch Drilldown</div>
-                    <div className="text-2xl font-bold">{call.id}</div>
+                    <div className="text-xs font-bold uppercase tracking-widest text-pink-500 mb-1">Diagnostic Drilldown</div>
+                    <div className="text-4xl font-extrabold text-white">{call.id}</div>
                   </div>
-                  <button onClick={onClose} className="text-slate-400">
-                    Close
+                  <button onClick={onClose} className="bg-slate-800 hover:bg-slate-700 p-2 rounded-lg transition-colors">
+                    <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
                   </button>
                 </div>
 
-                <div className="mb-8">
-                  <div className="mb-3 text-lg font-semibold">
-                    Step 0 — Candidate Quotes Retrieved
-                  </div>
-                  {candidateQuotesMock.map((q, i) => (
-                    <div key={i} className="mb-3 rounded-lg bg-slate-800 p-4">
-                      <div className="mb-2 text-sm text-slate-300">"{q.quote}"</div>
-                      <div className="flex gap-4 text-xs">
-                        <div>
-                          Signal A: <Badge status={q.signalA ? "TRUE" : "FALSE"} />
-                        </div>
-                        <div>
-                          Signal B: <Badge status={q.signalB ? "TRUE" : "FALSE"} />
-                        </div>
-                        <div>
-                          Signal C: <Badge status={q.signalC ? "TRUE" : "FALSE"} />
-                        </div>
+                <div className="space-y-16">
+                  {signalDiagnosticsMock.layers.map((layer) => (
+                    <div key={layer.id} className="space-y-8">
+                      <div className="border-b border-slate-700 pb-2">
+                        <h2 className="text-sm font-black uppercase tracking-[0.2em] text-slate-400">{layer.title}</h2>
                       </div>
+
+                      {layer.signals && (
+                        <div className="space-y-10">
+                          {layer.signals.map((sig) => (
+                            <div key={sig.id} className="space-y-3">
+                              <h3 className="text-lg font-bold text-slate-200">Signal {sig.id}: {sig.name}</h3>
+                              <ul className="space-y-2 text-sm">
+                                <li className="flex gap-2">
+                                  <span className="font-bold text-slate-400">• Result:</span>
+                                  <Badge status={sig.result} />
+                                </li>
+                                <li className="flex flex-col gap-2">
+                                  <span className="font-bold text-slate-400">• Reasoning:</span>
+                                  {typeof sig.reasoning === 'string' ? (
+                                    <span className="text-slate-300">{sig.reasoning}</span>
+                                  ) : (
+                                    <div className="pl-6 space-y-6 mt-2 border-l-2 border-slate-800">
+                                      {sig.reasoning.patterns.map((p, idx) => (
+                                        <div key={idx} className="space-y-3">
+                                          <div className="font-bold text-slate-200">• {p.name}: <span className="font-normal text-slate-400">{p.details}</span></div>
+                                          {p.quotes.map((q, qIdx) => (
+                                            <div key={qIdx} className="font-bold text-slate-200">• Quote: <span className="font-normal italic text-slate-300">"{q.text}"</span> <span className="text-slate-500">(Segment {q.segment})</span></div>
+                                          ))}
+                                          <div className="font-bold text-slate-200">• Tokens: 
+                                            <div className="flex flex-wrap gap-2 mt-2 font-normal">
+                                              {p.tokens.map((t, tIdx) => (
+                                                typeof t === 'string' ? (
+                                                  <span key={tIdx} className="text-slate-300">{t}{tIdx < p.tokens.length - 1 ? "," : ""}</span>
+                                                ) : (
+                                                  <span key={tIdx} className="bg-slate-800 px-2 py-0.5 rounded text-white text-xs border border-slate-700">
+                                                    <span className="text-slate-500 font-bold mr-1">{t.type}</span> ("{t.text}")
+                                                  </span>
+                                                )
+                                              ))}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  )}
+                                </li>
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {layer.logicPath && (
+                        <div className="space-y-8">
+                          <div className="space-y-4">
+                            <h3 className="text-lg font-bold text-slate-200">Logic Path:</h3>
+                            <div className="space-y-2 pl-2">
+                              {layer.logicPath.map((lp) => (
+                                <div key={lp.step} className="text-sm font-bold text-slate-200">
+                                  {lp.step}. {lp.query} <span className="font-normal text-slate-300">{lp.response}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="space-y-4 pt-6 border-t border-slate-800">
+                            <h3 className="text-lg font-bold text-slate-200">Result:</h3>
+                            <ul className="space-y-3 text-sm">
+                              <li className="flex gap-2">
+                                <span className="font-bold text-slate-400">• {layer.result.label}:</span>
+                                <span className="font-bold text-white uppercase tracking-widest">{layer.result.value}</span>
+                              </li>
+                              <li className="flex gap-2">
+                                <span className="font-bold text-slate-400">• Explanation:</span>
+                                <span className="text-slate-300 leading-relaxed">{layer.result.explanation}</span>
+                              </li>
+                            </ul>
+                            <div className="mt-6 flex items-center gap-2">
+                              <span className="text-sm font-bold text-slate-200">Final Output:</span>
+                              <span className="bg-slate-800 px-3 py-1 rounded text-white text-xs font-mono border border-slate-700">
+                                {layer.result.label} = {layer.result.value}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
-
-                <div>
-                  <div className="mb-3 text-lg font-semibold">
-                    Layer 2 — Qualification Gate
-                  </div>
-                  <div className="rounded-lg bg-slate-800 p-4 text-sm">
-                    rule_present = FALSE
-                  </div>
+                
+                <div className="mt-16 flex justify-end gap-1 px-4 opacity-40 hover:opacity-100 transition-opacity">
+                   <button className="text-xs text-slate-500 hover:text-white">Good</button>
+                   <button className="text-xs text-slate-500 hover:text-white ml-2">Bad</button>
                 </div>
               </div>
             </div>
