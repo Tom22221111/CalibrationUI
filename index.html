@@ -153,7 +153,7 @@
             "Onboarding Wizard",
             "Dashboard",
             "Pattern Library",
-            "Lever Matrix",
+            "Calibration Levers",
             "Rule Creation Flow",
             "Calibration Logs",
             "Prompt System",
@@ -1091,39 +1091,54 @@
            LEVER MATRIX
         ========================= */
 
-        function LeverMatrixPage() {
-          const rows = [
-            ["Word List Expansion", "Rule doesn't recognise a word that means the same thing", "I discovered you online", "Add discover to discovery verbs"],
-            ["New Word Category", "Rule doesn't recognise a type of wording", "I drove past the site", "Add PASSING_VERB group"],
-            ["New Sentence Structure", "People are saying the same thing in a different way", "Was it online you saw us?", "Add confirmation question pattern"],
-            ["Generic Object Words", "People say it / that / here instead of the business name", "Where did you find that?", "Allow it / that / this"],
-            ["Word Order Variation", "The right words are there but in the wrong order", "Did you see us online?", "Allow reversed token order"],
-            ["Conversation Spread Across Turns", "Parts of the signal appear across multiple lines", "Customer says source → advisor replies later", "Allow within two turns"],
-            ["Acknowledgement Style", "Advisor confirms without repeating the source", "Ah true", "Add acknowledgement tokens"],
-            ["Rule Too Strict", "Rule requires something unnecessary", "Requiring 'us' in discovery question", "Remove that requirement"],
+        /* =========================
+           CALIBRATION LEVERS
+        ========================= */
+
+        function CalibrationLeversPage() {
+          const levers = [
+            { layer: "Layer 0: Retrieval (Pre-AI Pipeline)", num: "1", name: "Retrieval Hint Expansion", problem: '"I was just looking on your website" (Quote not surfaced).', fix: "Expand keywords: website, site, looking, browsing.", effect: "Improves candidate recall." },
+            { layer: "", num: "2", name: "Retrieval Pattern Expansion", problem: '"I saw your van driving past" (New class of source expression).', fix: "Add structured pattern: PASS_BY_REFERENCE.", effect: "Prevents structural retrieval blind spots." },
+            { layer: "Layer 1: Signal (Structural Linguistic)", num: "3", name: "Token Dictionary Expansion", problem: '"I discovered you online" (Vocabulary missing).', fix: "Add: discover -> DISCOVERY_VERB.", effect: "Fills vocabulary gaps in existing structures." },
+            { layer: "", num: "4", name: "Token Conflict Resolution", problem: '"Call back" treated as both hesitation AND callback.', fix: "Remove token from one signal family.", effect: "Eliminates logic duplication/errors." },
+            { layer: "", num: "5", name: "Structural Pattern Coverage", problem: '"Was it online you saw us?" (Unmodeled structure).', fix: "Add: SOURCE_REFERENCE + DISCOVERY_VERB.", effect: "Models new conversational structures." },
+            { layer: "", num: "6", name: "Object Reference Coverage", problem: '"I\'ll take that one" (Generic reference not recognized).', fix: "Add: that one, this one, that unit.", effect: "Recognizes natural compound references." },
+            { layer: "", num: "7", name: "Token Order Flexibility", problem: '"Did you see us online?" (Correct tokens, wrong order).', fix: "Allow reversed token order.", effect: "Increases detection robustness." },
+            { layer: "", num: "8", name: "Signal Scope Expansion", problem: "Customer gives source; advisor acknowledges turns later.", fix: "Allow: same turn, adjacent, or two-turn window.", effect: "Connects signals across turn windows." },
+            { layer: "", num: "9", name: "Acknowledgement Pattern", problem: 'Advisor confirms with "Ah right" (No content restated).', fix: "Add specific acknowledgement tokens.", effect: "Detects implicit advisor confirmation." },
+            { layer: "Layer 2: Rule (Decision Layer)", num: "10", name: "Structural Anchor Relaxation", problem: 'Rule requires US_REFERENCE but "Where did you find that?" is valid.', fix: "Remove US_REFERENCE requirement.", effect: "Reduces unnecessary constraints." },
+            { layer: "", num: "11", name: "Signal Dependency Adjustment", problem: "Rule requires B AND C but should be B OR C.", fix: "Change logic from AND to OR.", effect: "Adjusts strictness of signal combinations." },
+            { layer: "Governance", num: "N/A", name: "QUERY_FOR_MANAGER", problem: "Callback without time accepted by manager (Policy conflict).", fix: "Stop calibration; Escalate decision.", effect: "Policy resolution (not a lever)." }
           ];
 
           return (
-            <div className="p-10">
-              <h1 className="text-2xl font-bold">Calibration Lever Matrix</h1>
-              <p className="mt-2 text-slate-500">Plain-English reference for what kind of rule adjustment is needed during calibration.</p>
-              <div className="mt-6 rounded-xl border bg-white p-6">
-                <table className="w-full text-sm">
-                  <thead className="text-left text-slate-500">
+            <div className="p-10 max-w-7xl mx-auto space-y-8">
+              <div>
+                <h1 className="text-3xl font-bold text-slate-900">Calibration Levers</h1>
+                <p className="mt-2 text-slate-500 font-medium">Categorized levers for precise, deterministic rule adjustment.</p>
+              </div>
+
+              <div className="rounded-2xl border bg-white overflow-hidden shadow-sm">
+                <table className="w-full text-sm text-left">
+                  <thead className="bg-slate-50 border-b text-slate-500 font-bold">
                     <tr>
-                      <th>Lever</th>
-                      <th>Meaning</th>
-                      <th>Example Problem</th>
-                      <th>Example Fix</th>
+                      <th className="px-4 py-4">Layer</th>
+                      <th className="px-4 py-4">Lever #</th>
+                      <th className="px-4 py-4">Lever Name</th>
+                      <th className="px-4 py-4">Example Problem</th>
+                      <th className="px-4 py-4">Proposed Fix</th>
+                      <th className="px-4 py-4">System Effect</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {rows.map((row) => (
-                      <tr key={row[0]} className="border-t">
-                        <td className="py-3 font-medium text-pink-700">{row[0]}</td>
-                        <td className="text-slate-600">{row[1]}</td>
-                        <td className="text-slate-600">{row[2]}</td>
-                        <td className="text-slate-600">{row[3]}</td>
+                  <tbody className="divide-y">
+                    {levers.map((l, i) => (
+                      <tr key={i} className={`hover:bg-slate-50 transition-colors ${l.layer ? 'bg-slate-50/30' : ''}`}>
+                        <td className="px-4 py-4 font-black text-[10px] uppercase tracking-wider text-pink-600">{l.layer}</td>
+                        <td className="px-4 py-4 text-slate-400 font-bold">{l.num}</td>
+                        <td className="px-4 py-4 font-bold text-slate-900">{l.name}</td>
+                        <td className="px-4 py-4 text-slate-600 max-w-xs">{l.problem}</td>
+                        <td className="px-4 py-4 text-pink-700 font-medium">{l.fix}</td>
+                        <td className="px-4 py-4 text-slate-500 italic">{l.effect}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -1249,7 +1264,7 @@
                 {page === "Onboarding Wizard" && <WizardPage />}
                 {page === "Dashboard" && <DashboardPage />}
                 {page === "Pattern Library" && <PatternLibraryPage />}
-                {page === "Lever Matrix" && <LeverMatrixPage />}
+                {page === "Calibration Levers" && <CalibrationLeversPage />}
               </div>
             </div>
           );
