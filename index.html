@@ -1129,57 +1129,145 @@
 
         function LogSchemaPage() {
           const schemaSections = [
-            { title: "Core Record Structure", items: [
-              { field: "Calibration_ID", type: "UUID", desc: "Unique calibration event" },
-              { field: "Rule_ID", type: "STRING", desc: "Deterministic rule identifier" },
-              { field: "Rule_Version", type: "STRING", desc: "Version before change" },
-              { field: "Run_Number", type: "INT", desc: "Calibration loop iteration" }
-            ]},
-            { title: "Context Layer", items: [
-              { field: "Client_ID", type: "STRING", desc: "Storage Vault / Gym / etc" },
-              { field: "Dataset_ID", type: "STRING", desc: "Batch of calls used" },
-              { field: "Call_Count", type: "INT", desc: "Number of calls in run" },
-              { field: "Calibrator_Type", type: "ENUM", desc: "Human / AI / Hybrid" }
-            ]},
-            { title: "Mismatch Diagnosis Layer", items: [
-              { field: "Mismatch_Type", type: "ENUM", desc: "FP / FN / Policy" },
-              { field: "Failure_Layer", type: "ENUM", desc: "Retrieval / Signal / Rule / Gov" },
-              { field: "Failure_Signal", type: "STRING", desc: "Signal ID if relevant" },
-              { field: "Root_Cause_Category", type: "STRING", desc: "Lever ontology mapping" }
-            ]},
-            { title: "Behavioural Impact Layer", items: [
-              { field: "Detection_Accuracy_Before", type: "FLOAT", desc: "" },
-              { field: "Detection_Accuracy_After", type: "FLOAT", desc: "" },
-              { field: "Recall_Change", type: "FLOAT", desc: "" },
-              { field: "Precision_Change", type: "FLOAT", desc: "" }
-            ]},
-            { title: "Retrieval Evolution Layer", items: [
-              { field: "Keywords_Added", type: "ARRAY", desc: "" },
-              { field: "Candidate_Recall_After", type: "FLOAT", desc: "" }
-            ]},
-            { title: "System Evolution Flags", items: [
-              { field: "New_Lever_Discovered", type: "BOOLEAN", desc: "" },
-              { field: "Termination_Reason", type: "ENUM", desc: "Converged / Policy Block / Data Insufficient" }
-            ]}
+            { 
+              num: "1️⃣", 
+              title: "Calibration Log — Core Record Structure", 
+              subtitle: "Each log entry represents: One calibration action on one rule during one run.",
+              items: [
+                { field: "Calibration_ID", type: "UUID", desc: "Unique calibration event" },
+                { field: "Rule_ID", type: "STRING", desc: "Deterministic rule identifier" },
+                { field: "Rule_Version", type: "STRING", desc: "Version before change" },
+                { field: "Run_Number", type: "INT", desc: "Calibration loop iteration" }
+              ]
+            },
+            { 
+              num: "2️⃣", 
+              title: "Context Layer", 
+              subtitle: "Defines what environment calibration occurred in",
+              items: [
+                { field: "Client_ID", type: "STRING", desc: "Storage Vault / Gym / etc" },
+                { field: "Dataset_ID", type: "STRING", desc: "Batch of calls used" },
+                { field: "Call_Count", type: "INT", desc: "Number of calls in run" },
+                { field: "Timestamp", type: "DATETIME", desc: "Calibration event time" },
+                { field: "Calibrator_Type", type: "ENUM", desc: "Human / AI / Hybrid" }
+              ]
+            },
+            { 
+              num: "3️⃣", 
+              title: "Mismatch Diagnosis Layer", 
+              subtitle: "Captures why calibration was triggered",
+              items: [
+                { field: "Mismatch_Type", type: "ENUM", desc: "False Positive / False Negative / Policy Conflict" },
+                { field: "Failure_Layer", type: "ENUM", desc: "Retrieval / Signal / Qualification / Governance" },
+                { field: "Failure_Signal", type: "STRING", desc: "Signal ID if relevant" },
+                { field: "Pattern_Family", type: "STRING", desc: "Pattern classifier output" },
+                { field: "Root_Cause_Category", type: "STRING", desc: "Lever ontology mapping" },
+                { field: "Example_Quote", type: "TEXT", desc: "Representative failure quote" }
+              ]
+            },
+            { 
+              num: "4️⃣", 
+              title: "Lever Execution Layer", 
+              subtitle: "Captures what change was applied",
+              items: [
+                { field: "Lever_ID", type: "STRING", desc: "From lever ontology" },
+                { field: "Lever_Layer", type: "ENUM", desc: "Retrieval / Signal / Rule" },
+                { field: "Adjustment_Description", type: "TEXT", desc: "Human readable change" },
+                { field: "Change_Type", type: "ENUM", desc: "Add / Remove / Relax / Expand / Reclassify" },
+                { field: "Affected_Component", type: "STRING", desc: "Token / Pattern / Logic" }
+              ]
+            },
+            { 
+              num: "5️⃣", 
+              title: "Behavioural Impact Layer", 
+              subtitle: "Captures what the change did | 👉 automated calibration scoring",
+              items: [
+                { field: "Detection_Accuracy_Before", type: "FLOAT", desc: "" },
+                { field: "Detection_Accuracy_After", type: "FLOAT", desc: "" },
+                { field: "Mismatch_Count_Before", type: "INT", desc: "" },
+                { field: "Mismatch_Count_After", type: "INT", desc: "" },
+                { field: "Recall_Change", type: "FLOAT", desc: "" },
+                { field: "Precision_Change", type: "FLOAT", desc: "" }
+              ]
+            },
+            { 
+              num: "6️⃣", 
+              title: "Governance Layer", 
+              subtitle: "Captures policy ambiguity handling | 👉 enterprise trust",
+              items: [
+                { field: "Governance_Flag", type: "BOOLEAN", desc: "True if manager escalation" },
+                { field: "Governance_Type", type: "ENUM", desc: "Policy Ambiguity / Rule Design Decision" },
+                { field: "Manager_Decision", type: "TEXT", desc: "Outcome summary" },
+                { field: "Rule_Definition_Change", type: "BOOLEAN", desc: "If rule meaning changed" }
+              ]
+            },
+            { 
+              num: "7️⃣", 
+              title: "Pattern Evolution Layer", 
+              subtitle: "Tracks pattern ontology growth",
+              items: [
+                { field: "Pattern_Added", type: "BOOLEAN", desc: "" },
+                { field: "Pattern_Name", type: "STRING", desc: "" },
+                { field: "Pattern_Library_Version", type: "STRING", desc: "" },
+                { field: "Pattern_Description", type: "TEXT", desc: "" }
+              ]
+            },
+            { 
+              num: "8️⃣", 
+              title: "Retrieval Evolution Layer", 
+              subtitle: "Tracks Step 0 intelligence growth | 👉 Step 0 intelligence growth",
+              items: [
+                { field: "Keywords_Added", type: "TEXT ARRAY", desc: "" },
+                { field: "Keywords_Removed", type: "TEXT ARRAY", desc: "" },
+                { field: "Candidate_Recall_Before", type: "FLOAT", desc: "" },
+                { field: "Candidate_Recall_After", type: "FLOAT", desc: "" }
+              ]
+            },
+            { 
+              num: "9️⃣", 
+              title: "Rule Stability Layer", 
+              subtitle: "Tracks convergence behaviour | 👉 automated rule maturity scoring",
+              items: [
+                { field: "Stability_Score", type: "FLOAT", desc: "" },
+                { field: "Runs_To_Convergence", type: "INT", desc: "" },
+                { field: "Confidence_Level", type: "ENUM", desc: "Low / Medium / High" }
+              ]
+            },
+            { 
+              num: "🔟", 
+              title: "System Evolution Flags (CRITICAL)", 
+              subtitle: "These fields enable AI self-governance later.",
+              items: [
+                { field: "New_Lever_Discovered", type: "BOOLEAN", desc: "" },
+                { field: "Lever_Ontology_Updated", type: "BOOLEAN", desc: "" },
+                { field: "Calibration_Loop_Terminated", type: "BOOLEAN", desc: "" },
+                { field: "Termination_Reason", type: "ENUM", desc: "Converged / Policy Block / Data Insufficient" }
+              ]
+            }
           ];
 
           return (
             <div className="space-y-16 p-12 max-w-7xl mx-auto">
               <div className="border-b border-slate-200 pb-10">
                 <div className="text-xs font-black uppercase tracking-[0.4em] text-pink-500 mb-2">Metrix System-Level Spec</div>
-                <h1 className="text-4xl font-black text-slate-900 tracking-tight">Calibration Log Schema v1</h1>
+                <h1 className="text-4xl font-black text-slate-900 tracking-tight">Metrix Calibration Log Schema v1</h1>
                 <p className="mt-4 text-slate-500 text-lg max-w-3xl leading-relaxed italic">
-                  Not just debugging. The memory of rule evolution. Capturing every calibration decision and system expansion step.
+                  👉 the memory of rule evolution. Capturing every calibration decision and system expansion step. It is NOT just debugging.
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-16">
                 {schemaSections.map((s, idx) => (
-                  <div key={idx} className="space-y-4">
-                    <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-400 border-b border-slate-100 pb-2">{s.title}</h3>
+                  <div key={idx} className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                        <span className="text-pink-500">{s.num}</span> {s.title}
+                      </h3>
+                      <p className="text-xs text-slate-400 font-medium mt-1 leading-relaxed italic">{s.subtitle}</p>
+                    </div>
                     <div className="space-y-4">
                       {s.items.map(i => (
-                        <div key={i.field} className="group">
+                        <div key={i.field} className="group border-l-2 border-slate-100 pl-4 hover:border-pink-500 transition-colors">
                           <div className="flex justify-between items-baseline">
                             <span className="font-mono text-[11px] font-black group-hover:text-pink-600 transition-colors uppercase tracking-widest">{i.field}</span>
                             <span className="text-[10px] font-bold text-slate-300 uppercase tracking-tighter">{i.type}</span>
@@ -1193,7 +1281,7 @@
               </div>
 
               <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-slate-900">11️⃣ Full JSON Record Example</h2>
+                <h2 className="text-2xl font-bold text-slate-900">1️⃣1️⃣ Full JSON Record Example</h2>
                 <div className="rounded-3xl bg-slate-900 p-8 shadow-2xl relative group border-t-4 border-pink-500">
                   <pre className="text-xs text-pink-400 font-mono leading-relaxed overflow-x-auto">
 {`{
