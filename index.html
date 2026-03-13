@@ -156,6 +156,7 @@
             "Lever Matrix",
             "Rule Creation Flow",
             "Calibration Logs",
+            "Prompt System",
           ];
 
           return (
@@ -1133,6 +1134,104 @@
         }
 
         /* =========================
+           PROMPT SYSTEM
+        ========================= */
+
+        function PromptSystemPage() {
+          const canonicalPrompts = [
+            { name: "Pattern Classifier Prompt", type: "System", purpose: "Classifies raw detection rule into a conversational pattern family." },
+            { name: "Keyword Hints Generation Prompt", type: "Retrieval", purpose: "Generates retrieval keywords for Python candidate quote extraction layer." },
+            { name: "Client Example Coverage Mapping Prompt", type: "Coverage", purpose: "Audits rule coverage against SHOULD_DETECT / SHOULD_NOT_DETECT examples before first calibration run." },
+            { name: "Calibration Mismatch Diagnosis Prompt (v2)", type: "Calibration Intelligence", purpose: "Diagnoses mismatch root cause across retrieval, signal, rule logic, or policy ambiguity layers." },
+            { name: "Calibration Execution Prompt", type: "Calibration Engine", purpose: "Applies isolated deterministic lever adjustments while preserving rule architecture." },
+            { name: "Detection Sign-off Report Prompt", type: "Governance", purpose: "Produces final production-readiness calibration report after convergence." }
+          ];
+
+          const engineeringPrompts = [
+            { name: "Question Pattern Rule Engineering Prompt", pattern: "Question Pattern", purpose: "Converts discovery / probing behaviours into deterministic signal extraction + qualification logic." },
+            { name: "Recommendation Pattern Rule Engineering Prompt", pattern: "Recommendation Pattern", purpose: "Converts advisor guidance / suggestions into deterministic recommendation detection logic." },
+            { name: "Commitment / Next Step Pattern Rule Engineering Prompt", pattern: "Commitment / Next Step", purpose: "Converts booking, reservation, callback or commitment behaviours into deterministic next-step detection logic." },
+            { name: "Benefit Link Pattern Rule Engineering Prompt", pattern: "Benefit Link Pattern", purpose: "Converts feature → outcome persuasion into deterministic benefit linkage detection logic." },
+            { name: "Information Statement Pattern Rule Engineering Prompt", pattern: "Information Statement Pattern", purpose: "Converts factual advisor statements into deterministic informational signal detection logic." },
+            { name: "Confirmation Pattern Rule Engineering Prompt", pattern: "Confirmation Pattern", purpose: "Converts advisor confirmation / restatement behaviours into deterministic confirmation detection logic." },
+            { name: "Acknowledgement Pattern Rule Engineering Prompt", pattern: "Acknowledgement Pattern", purpose: "Converts listening signals and short affirmations into deterministic acknowledgement detection logic." },
+            { name: "Objection Pattern Rule Engineering Prompt", pattern: "Objection Pattern", purpose: "Converts customer resistance handling into deterministic objection detection logic." },
+            { name: "Assurance Pattern Rule Engineering Prompt", pattern: "Assurance Pattern", purpose: "Converts reassurance / risk reduction language into deterministic assurance detection logic." },
+            { name: "Recap Pattern Rule Engineering Prompt", pattern: "Recap Pattern", purpose: "Converts summary / next-step recap behaviours into deterministic recap detection logic." }
+          ];
+
+          return (
+            <div className="space-y-12 p-10 max-w-6xl mx-auto">
+              <div className="border-b border-slate-200 pb-8">
+                <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Metrix Prompt System</h1>
+                <p className="mt-2 text-slate-500 font-medium italic">Canonical Prompt Architecture & Pattern-Specific Engineering Frameworks</p>
+              </div>
+
+              <div className="space-y-6">
+                <h2 className="text-xl font-bold text-slate-800">Canonical Prompt Table</h2>
+                <div className="rounded-2xl border bg-white overflow-hidden shadow-sm">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-slate-50 border-b text-slate-500 font-bold">
+                      <tr>
+                        <th className="px-6 py-4">Prompt Name</th>
+                        <th className="px-6 py-4">Type</th>
+                        <th className="px-6 py-4">Purpose</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y">
+                      {canonicalPrompts.map((p, i) => (
+                        <tr key={i} className="hover:bg-slate-50">
+                          <td className="px-6 py-4 font-bold text-slate-900">{p.name}</td>
+                          <td className="px-6 py-4">
+                            <span className="bg-pink-50 text-pink-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">{p.type}</span>
+                          </td>
+                          <td className="px-6 py-4 text-slate-600">{p.purpose}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <h2 className="text-xl font-bold text-slate-800">Pattern-Specific Rule Engineering Prompts</h2>
+                <div className="rounded-2xl border bg-white overflow-hidden shadow-sm">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-slate-50 border-b text-slate-500 font-bold">
+                      <tr>
+                        <th className="px-6 py-4">Prompt Name</th>
+                        <th className="px-6 py-4">Pattern Family</th>
+                        <th className="px-6 py-4">Purpose</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y">
+                      {engineeringPrompts.map((p, i) => (
+                        <tr key={i} className="hover:bg-slate-50">
+                          <td className="px-6 py-4 font-bold text-slate-900">{p.name}</td>
+                          <td className="px-6 py-4 font-semibold text-pink-600 italic text-xs">{p.pattern}</td>
+                          <td className="px-6 py-4 text-slate-600">{p.purpose}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="mt-8 p-6 bg-slate-900 rounded-3xl text-white relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-pink-500/20 transition-colors"></div>
+                  <div className="relative z-10 flex items-center gap-6">
+                      <div className="h-10 w-10 bg-pink-500 rounded-xl flex items-center justify-center font-black">AI</div>
+                      <div>
+                          <p className="text-xs font-black uppercase tracking-[0.3em] text-pink-500 mb-1">Architecture Note</p>
+                          <p className="text-sm text-slate-400 max-w-2xl leading-relaxed">This prompt system ensures <span className="text-white font-bold">deterministic reliability</span> by decoupling pattern classification from logic engineering.</p>
+                      </div>
+                  </div>
+              </div>
+            </div>
+          );
+        }
+
+        /* =========================
            MAIN
         ========================= */
 
@@ -1146,6 +1245,7 @@
               <div className="flex-1 overflow-y-auto">
                 {page === "Rule Creation Flow" && <DetectionRuleLifecycleDashboard />}
                 {page === "Calibration Logs" && <CalibrationLogsPage />}
+                {page === "Prompt System" && <PromptSystemPage />}
                 {page === "Onboarding Wizard" && <WizardPage />}
                 {page === "Dashboard" && <DashboardPage />}
                 {page === "Pattern Library" && <PatternLibraryPage />}
