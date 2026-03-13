@@ -162,7 +162,8 @@
                 { name: "Lever Ontology" },
                 { name: "Log Schema" },
               ]
-            }
+            },
+            { name: "Example Rule Format" }
           ];
 
           return (
@@ -1328,6 +1329,396 @@
         }
 
         /* =========================
+           EXAMPLE RULE FORMAT
+        ========================= */
+
+        function ExampleRuleFormatPage() {
+          return (
+            <div className="space-y-8 p-10 max-w-5xl mx-auto">
+              <div>
+                <h1 className="text-3xl font-bold">Example Rule Format</h1>
+                <p className="mt-2 text-slate-500">A detailed breakdown of the mechanical linguistic signals required for detection.</p>
+              </div>
+              <div className="rounded-2xl border bg-white p-8 shadow-sm">
+                <pre className="whitespace-pre-wrap font-mono text-sm leading-relaxed text-slate-700">
+{`────────────────────────
+LAYER 1 — SIGNAL EXTRACTION
+────────────────────────
+Objective
+
+Detect mechanically observable linguistic signals indicating that the source of how the customer found the company was identified.
+
+No inference allowed.
+
+Required Signals
+Signal A
+
+Name
+Source Discovery Question
+
+Mechanical Definition
+Advisor interrogative sentence that matches one of the following structural patterns indicating the origin of how the customer found the company.
+
+The sentence must be interrogative.
+
+Pattern 1 — Discovery Question Pattern
+
+Advisor question containing the following token groups:
+
+QUESTION_WORD
++
+DISCOVERY_VERB
++
+OBJECT_REFERENCE
+Token Group 1 — Question Word
+how
+where
+Token Group 2 — Discovery Verb
+find
+find out
+hear
+see
+come across
+discover
+Token Group 3 — Object Reference
+us
+the site
+storage vault
+our storage
+the company
+it
+that
+this
+
+These tokens represent the object being discovered.
+
+Structural Condition
+
+Tokens must appear in the following order within the same advisor sentence:
+
+QUESTION_WORD
+→ DISCOVERY_VERB
+→ OBJECT_REFERENCE
+
+Additional words may appear between tokens.
+
+Examples That Should Trigger
+How did you find us?
+Where did you hear about us?
+How did you discover the company?
+Where did you find that?
+How did you see it?
+Pattern 2 — Source Confirmation Question
+
+Advisor question referencing a source channel and a discovery verb.
+
+Token Group 1 — Source Reference
+online
+google
+website
+advert
+advertisement
+sign
+signage
+recommendation
+referral
+Token Group 2 — Discovery Verb
+see
+seen
+find
+found
+hear
+heard
+Structural Condition
+
+Tokens must appear within the same advisor sentence.
+
+Sentence must be interrogative.
+
+Token order may follow either structure:
+
+SOURCE_REFERENCE → DISCOVERY_VERB
+
+or
+
+DISCOVERY_VERB → SOURCE_REFERENCE
+Examples That Should Trigger
+
+Discovery pattern:
+
+How did you find us?
+Where did you hear about us?
+How did you discover the company?
+Where did you find that?
+
+Confirmation pattern:
+
+Was it online you saw us?
+Did you see us on Google?
+Was it a recommendation you heard about us through?
+
+Signal B becomes TRUE if Pattern 1 OR Pattern 2 OR Pattern 3 occurs.
+
+Pattern 1 — Direct Discovery Statement
+
+Customer sentence containing:
+
+DISCOVERY_VERB
++
+OBJECT_REFERENCE
+DISCOVERY_VERB tokens
+found
+find
+saw
+seen
+heard
+hear
+came across
+noticed
+OBJECT_REFERENCE tokens
+you
+the site
+storage vault
+the company
+it
+that
+this
+here
+Structural Condition
+
+Tokens must appear in the same customer sentence.
+
+Order may be:
+
+DISCOVERY_VERB → OBJECT_REFERENCE
+
+or
+
+OBJECT_REFERENCE → DISCOVERY_VERB
+Example detections
+I found you online
+I saw the site
+I heard about you
+I came across the company
+I saw it
+I noticed this place
+Pattern 2 — Referral Source
+
+Customer sentence containing:
+
+PERSON_REFERENCE
++
+USAGE_VERB
++
+OBJECT_REFERENCE
+PERSON_REFERENCE tokens
+mum
+mom
+dad
+brother
+sister
+friend
+mate
+family
+someone
+USAGE_VERB tokens
+uses
+used
+stored
+recommended
+told me about
+mentioned
+OBJECT_REFERENCE tokens
+you
+your facility
+the storage
+the site
+here
+Example detections
+My mum uses you
+A friend recommended you
+My brother stored here
+Someone told me about you
+My dad uses this place
+Pattern 3 — Pass-By Discovery
+
+Customer sentence describing physical discovery of the location.
+
+Customer sentence containing:
+
+PASSING_VERB
++
+OBJECT_REFERENCE
+PASSING_VERB tokens
+drove past
+drive past
+passed
+pass
+driving past
+driving by
+walked past
+walking past
+OBJECT_REFERENCE tokens
+it
+the site
+the building
+here
+this place
+Example detections
+I drove past it
+I passed the site
+I saw it driving by
+I walked past here
+
+Signal C
+
+Name
+Advisor Source Acknowledgement
+
+Mechanical Definition
+Advisor sentence acknowledging the customer's stated source.
+
+Signal C is TRUE if Pattern 1 OR Pattern 2 occurs.
+
+Pattern 1 — Explicit Source Confirmation (existing rule)
+
+Advisor sentence must contain both:
+
+Confirmation prefix
+oh right
+okay
+great
+so
+right
+
+AND
+
+Source reference
+you found us
+you saw us
+you were passing
+you came across us
+you found us online
+
+Example
+
+Oh right, you found us online.
+Okay, you saw the site then.
+Pattern 2 — Simple Acknowledgement
+
+Advisor sentence containing acknowledgement tokens.
+
+Acknowledgement tokens
+ah
+ah right
+ah true
+right
+okay
+got you
+i see
+makes sense
+true
+
+Structural condition
+
+The acknowledgement must occur:
+
+within two advisor turns after the customer source statement
+
+Example
+
+Customer: My mum uses you.
+Advisor: Ah true.
+
+Customer: I found you online.
+Advisor: Right.
+
+Pattern 3 — Source Restatement
+
+Advisor sentence confirming the customer's discovery source.
+
+Advisor sentence must contain:
+
+CUSTOMER_REFERENCE
++
+SOURCE_ACTIVITY
++
+SOURCE_CHANNEL
+
+Token Group — Customer Reference
+
+you
+you were
+you are
+so you
+
+Token Group — Source Activity
+
+looking
+checking
+browsing
+having a look
+looking at
+
+Token Group — Source Channel
+
+website
+online
+google
+the website
+the site
+Structural Condition
+
+Tokens must appear in the same advisor sentence.
+
+Example detections
+
+Right, so you were just looking on the website
+So you were checking the website
+You were browsing online
+HARD GATE
+
+If any required signal is not explicitly present according to its structural anchor definition, return FALSE.
+
+Contextual alignment alone is insufficient.
+
+Optional Mechanical Exclusion
+
+Return FALSE if:
+
+Customer source statement occurs but no advisor acknowledgement occurs within the next two advisor turns.
+
+────────────────────────
+LAYER 2 — QUALIFICATION GATE
+────────────────────────
+Qualification Formula
+IF
+   Signal A = TRUE
+
+THEN
+   rule_present = TRUE
+
+ELSE IF
+   Signal B = TRUE
+AND
+   Signal C = TRUE
+
+THEN
+   rule_present = TRUE
+
+ELSE
+   rule_present = FALSE
+
+No interpretation allowed.
+
+All required signals must be linguistically visible.`}
+                </pre>
+              </div>
+            </div>
+          );
+        }
+
+        /* =========================
            MAIN
         ========================= */
 
@@ -1339,6 +1730,7 @@
               <Sidebar page={page} setPage={setPage} />
 
               <div className="flex-1 overflow-y-auto">
+                {page === "Example Rule Format" && <ExampleRuleFormatPage />}
                 {page === "Rule Creation Flow" && <DetectionRuleLifecycleDashboard />}
                 {page === "Log Schema" && <LogSchemaPage />}
                 {page === "Lever Ontology" && <LeverOntologyPage />}
