@@ -593,7 +593,13 @@
               {/* Lever timeline + governance */}
               <div className="grid grid-cols-2 gap-6">
                 <div className="rounded-xl border bg-white p-6">
-                  <h2 className="mb-4 text-xl font-semibold">Lever Usage Timeline</h2>
+                  <div className="mb-4 flex items-center justify-between">
+                    <h2 className="text-xl font-semibold">Lever Usage Timeline</h2>
+                    <select className="cursor-pointer rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm focus:border-pink-500 focus:outline-none focus:ring-1 focus:ring-pink-500">
+                      <option>Run 2 (Latest)</option>
+                      <option>Run 1</option>
+                    </select>
+                  </div>
                   <table className="w-full text-sm">
                     <thead className="text-left font-bold text-slate-900">
                       <tr>
