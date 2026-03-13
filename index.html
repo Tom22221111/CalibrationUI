@@ -808,6 +808,75 @@
           );
         }
 
+        /* =========================
+           PROMPT SYSTEM
+        ========================= */
+
+        function PromptSystemPage() {
+          const canonicalPrompts = [
+            { name: "Pattern Classifier Prompt", type: "System", purpose: "Classifies raw detection rule into a conversational pattern family." },
+            { name: "Keyword Hints Generation Prompt", type: "Retrieval", purpose: "Generates retrieval keywords for Python candidate quote extraction layer." },
+            { name: "Client Example Coverage Mapping Prompt", type: "Coverage", purpose: "Audits rule coverage against SHOULD_DETECT / SHOULD_NOT_DETECT examples before first calibration run." },
+            { name: "Calibration Mismatch Diagnosis Prompt (v2)", type: "Calibration Intelligence", purpose: "Diagnoses mismatch root cause across retrieval, signal, rule logic, or policy ambiguity layers." },
+            { name: "Calibration Execution Prompt", type: "Calibration Engine", purpose: "Applies isolated deterministic lever adjustments while preserving rule architecture." },
+            { name: "Detection Sign-off Report Prompt", type: "Governance", purpose: "Produces final production-readiness calibration report after convergence." },
+          ];
+
+          const engineeringPrompts = [
+            { name: "Question Pattern Engineering", pattern: "Question Pattern", description: "Specialized for extracting multi-turn discovery and qualification flows." },
+            { name: "Next Step Engineering", pattern: "Commitment / Next Step", description: "Focused on identifying time-bound commitments and reservation loops." },
+            { name: "Benefit Linkage Engineering", pattern: "Benefit Link Pattern", description: "Maps technical features to value-based customer outcomes." },
+          ];
+
+          return (
+            <div className="p-10 max-w-7xl mx-auto space-y-12">
+              <div className="border-b border-slate-200 pb-8">
+                <h1 className="text-4xl font-black text-slate-900 tracking-tight">Metrix Prompt System</h1>
+                <p className="mt-4 text-slate-500 font-medium italic">🧠 The intelligence layer: Managing the canonical prompt library for deterministic rule calibration.</p>
+              </div>
+
+              <section className="space-y-6">
+                <h2 className="text-2xl font-bold text-slate-900">Canonical Prompt Table</h2>
+                <div className="rounded-2xl border bg-white overflow-hidden shadow-sm">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-slate-50 border-b text-slate-500 font-bold">
+                      <tr>
+                        <th className="px-6 py-4">Prompt Name</th>
+                        <th className="px-6 py-4">Type</th>
+                        <th className="px-6 py-4">Purpose</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {canonicalPrompts.map((p, i) => (
+                        <tr key={i} className="hover:bg-slate-50 transition-colors">
+                          <td className="px-6 py-4 font-bold text-slate-900">{p.name}</td>
+                          <td className="px-6 py-4">
+                            <span className="px-2 py-1 rounded-md bg-pink-50 text-pink-600 text-[10px] font-black uppercase tracking-widest">{p.type}</span>
+                          </td>
+                          <td className="px-6 py-4 text-slate-600 leading-relaxed font-medium">{p.purpose}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section className="space-y-6">
+                <h2 className="text-2xl font-bold text-slate-900">Pattern-Specific Rule Engineering Prompts</h2>
+                <div className="grid md:grid-cols-3 gap-6">
+                  {engineeringPrompts.map((p, i) => (
+                    <div key={i} className="p-6 rounded-3xl border bg-white shadow-sm space-y-4 hover:border-pink-200 transition-all group">
+                      <div className="text-[10px] font-black text-pink-500 uppercase tracking-widest group-hover:tracking-[0.2em] transition-all">{p.name}</div>
+                      <div className="text-lg font-bold text-slate-900">{p.pattern}</div>
+                      <p className="text-xs text-slate-500 leading-relaxed font-medium">{p.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </div>
+          );
+        }
+
 
         /* =========================
            PATTERN LIBRARY
