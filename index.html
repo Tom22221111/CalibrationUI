@@ -1340,8 +1340,8 @@
                 <p className="mt-2 text-slate-500">A detailed breakdown of the mechanical linguistic signals required for detection.</p>
               </div>
               <div className="rounded-2xl border bg-white p-8 shadow-sm">
-                <pre className="whitespace-pre-wrap font-mono text-sm leading-relaxed text-slate-700">
-{`────────────────────────
+                <div className="font-mono text-sm leading-relaxed text-slate-700">
+                  {`────────────────────────
 LAYER 1 — SIGNAL EXTRACTION
 ────────────────────────
 Objective
@@ -1711,8 +1711,21 @@ ELSE
 
 No interpretation allowed.
 
-All required signals must be linguistically visible.`}
-                </pre>
+All required signals must be linguistically visible.`.split('\n').map((line, i) => {
+                    if (line.startsWith('LAYER 1') || line.startsWith('LAYER 2')) {
+                      return <div key={i} className="text-2xl font-black text-slate-900 mt-8 mb-4">{line}</div>;
+                    } else if (line.startsWith('Signal A') || line.startsWith('Signal B') || line.startsWith('Signal C') || line.startsWith('HARD GATE')) {
+                      return <div key={i} className="text-xl font-extrabold text-slate-900 mt-6 mb-2">{line}</div>;
+                    } else if (line.startsWith('Pattern 1') || line.startsWith('Pattern 2') || line.startsWith('Pattern 3')) {
+                      return <div key={i} className="text-lg font-bold text-slate-800 mt-4 mb-2">{line}</div>;
+                    } else if (line.startsWith('────────────────────────')) {
+                      return <div key={i} className="text-slate-300">{line}</div>;
+                    } else if (line.trim() === '') {
+                      return <div key={i} className="h-4"></div>;
+                    }
+                    return <div key={i}>{line}</div>;
+                  })}
+                </div>
               </div>
             </div>
           );
