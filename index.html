@@ -150,6 +150,7 @@
 
         function Sidebar({ page, setPage }) {
           const navStructure = [
+            { name: "Build AI Framework ✨", url: "onboarding.html" },
             { name: "Onboarding Wizard" },
             { name: "Dashboard" },
             { name: "Pattern Library" },
@@ -191,6 +192,14 @@
                           ))}
                        </div>
                     </div>
+                  ) : section.url ? (
+                    <a
+                      key={section.name}
+                      href={section.url}
+                      className="block cursor-pointer rounded-lg px-3 py-3 text-sm transition-all text-white bg-pink-500 hover:bg-pink-600 font-bold shadow-sm mb-6 text-center"
+                    >
+                      {section.name}
+                    </a>
                   ) : (
                     <div
                       key={section.name}
