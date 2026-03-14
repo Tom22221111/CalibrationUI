@@ -150,22 +150,22 @@
 
         function Sidebar({ page, setPage }) {
           const navStructure = [
-            { name: "Create Your Call Performance Framework", url: "onboarding.html" },
-            { name: "Onboarding Wizard" },
-            { name: "Dashboard" },
-            { name: "Pattern Library" },
-            { name: "Prompt System" },
+            { name: "Customer Onboard Wizard", url: "onboarding.html" },
+            { name: "Rule Creation Visual Flow" },
+            { name: "Calibration Dashboard" },
             {
-              category: "Calibration",
+              category: "Technical Specifications",
               items: [
+                { name: "Pattern Library" },
+                { name: "Prompt System" },
                 { name: "Rule Creation Flow" },
                 { name: "Calibration Levers" },
                 { name: "Lever Ontology" },
                 { name: "Log Schema" },
+                { name: "Example Rule Format" },
+                { name: "Onboarding Architecture" },
               ]
-            },
-            { name: "Example Rule Format" },
-            { name: "Onboarding Architecture" }
+            }
           ];
 
           return (
@@ -1876,7 +1876,7 @@ All required signals must be linguistically visible.`.split('\n').map((line, i) 
         ========================= */
 
         function MetrixCalibrationWorkbench() {
-          const [page, setPage] = useState("Onboarding Wizard");
+          const [page, setPage] = useState("Rule Creation Visual Flow");
 
           return (
             <div className="flex min-h-screen bg-slate-50">
@@ -1888,8 +1888,8 @@ All required signals must be linguistically visible.`.split('\n').map((line, i) 
                 {page === "Log Schema" && <LogSchemaPage />}
                 {page === "Lever Ontology" && <LeverOntologyPage />}
                 {page === "Prompt System" && <PromptSystemPage />}
-                {page === "Onboarding Wizard" && <WizardPage />}
-                {page === "Dashboard" && <DashboardPage />}
+                {page === "Rule Creation Visual Flow" && <WizardPage />}
+                {page === "Calibration Dashboard" && <DashboardPage />}
                 {page === "Pattern Library" && <PatternLibraryPage />}
                 {page === "Calibration Levers" && <CalibrationLeversPage />}
                 {page === "Onboarding Architecture" && <OnboardingArchitecturePage />}
