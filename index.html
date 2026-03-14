@@ -1796,6 +1796,77 @@ All required signals must be linguistically visible.`.split('\n').map((line, i) 
                   </tbody>
                 </table>
               </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                  <h2 className="text-xl font-bold flex items-center gap-2">
+                    <span className="text-2xl">🧠</span> Required Logging Components (Enterprise Critical)
+                  </h2>
+                  <div className="rounded-xl border bg-white shadow-sm overflow-hidden">
+                    <table className="w-full text-sm text-left">
+                      <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+                        <tr>
+                          <th className="px-6 py-3">Logging Layer</th>
+                          <th className="px-6 py-3">Purpose</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 text-slate-700">
+                        <tr><td className="px-6 py-3 font-semibold text-slate-900">Onboarding Answer Log</td><td className="px-6 py-3">Audit how framework was generated</td></tr>
+                        <tr><td className="px-6 py-3 font-semibold text-slate-900">AI Prompt Output Log</td><td className="px-6 py-3">Store AI proposals for traceability</td></tr>
+                        <tr><td className="px-6 py-3 font-semibold text-slate-900">Framework Diff Log</td><td className="px-6 py-3">Track user edits vs AI output</td></tr>
+                        <tr><td className="px-6 py-3 font-semibold text-slate-900">Final Framework Snapshot</td><td className="px-6 py-3">Immutable scoring system record</td></tr>
+                        <tr><td className="px-6 py-3 font-semibold text-slate-900">Version Activation Log</td><td className="px-6 py-3">Track when framework becomes live</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h2 className="text-xl font-bold flex items-center gap-2">
+                    <span className="text-2xl">🧠</span> AI Usage Summary
+                  </h2>
+                  <div className="rounded-xl border bg-white p-6 shadow-sm space-y-4">
+                    <div>
+                      <h4 className="text-xs font-black uppercase tracking-wider text-red-500 mb-2">AI MUST be used at:</h4>
+                      <ul className="list-disc list-inside text-sm text-slate-600 space-y-1">
+                        <li>Process doc interpretation</li>
+                        <li>Framework generation</li>
+                        <li>Rule architecture generation</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-black uppercase tracking-wider text-amber-500 mb-2">AI MAY be used at:</h4>
+                      <ul className="list-disc list-inside text-sm text-slate-600 space-y-1">
+                        <li>Parsing failure definitions</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">AI NOT used at:</h4>
+                      <ul className="list-disc list-inside text-sm text-slate-600 space-y-1">
+                        <li>Behaviour weighting math</li>
+                        <li>Industry template loading</li>
+                        <li>Required behaviour checklist mapping</li>
+                        <li>Editing interfaces</li>
+                        <li>Versioning + logging</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                  <span className="text-2xl">🧠</span> One-Line System Flow
+                </h2>
+                <div className="rounded-xl border bg-pink-50 border-pink-100 p-6 shadow-sm">
+                  <p className="text-pink-700 font-medium text-center leading-relaxed">
+                    User answers <span className="mx-2 text-pink-300">→</span> system structures inputs <span className="mx-2 text-pink-300">→</span> 
+                    AI generates framework <span className="mx-2 text-pink-300">→</span> user confirms <span className="mx-2 text-pink-300">→</span> 
+                    AI generates rule architecture <span className="mx-2 text-pink-300">→</span> user confirms <span className="mx-2 text-pink-300">→</span> 
+                    framework version saved <span className="mx-2 text-pink-300">→</span> rule engineering pipeline begins
+                  </p>
+                </div>
+              </div>
             </div>
           );
         }
