@@ -711,6 +711,31 @@
         let currentStep = 0;
         const totalSteps = 9;
 
+        // Onboarding Session Manager (Component 1)
+        const SESSION_KEY = 'metrix_onboarding_session';
+
+        function saveSession() {
+            const sessionData = {
+                currentStep: currentStep,
+                timestamp: new Date().toISOString(),
+                industry: document.getElementById('industry').value,
+                // Add more field data here as needed
+            };
+            localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+        }
+
+        function loadSession() {
+            const saved = localStorage.getItem(SESSION_KEY);
+            if (saved) {
+                const data = JSON.parse(saved);
+                if (data.currentStep > 0 && confirm('Would you like to resume your previous setup session?')) {
+                    currentStep = data.currentStep;
+                    if (data.industry) document.getElementById('industry').value = data.industry;
+                    showStep(currentStep);
+                }
+            }
+        }
+
         function updateProgress() {
             if (currentStep === 0) {
                 document.getElementById('progressWrapper').style.display = 'none';
@@ -726,6 +751,7 @@
             document.getElementById('step' + step).classList.add('active');
             updateProgress();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            saveSession();
         }
 
         function nextStep(step) {
@@ -750,10 +776,12 @@
                     document.getElementById('uploadSection').classList.add('hidden');
                 }
             }
+            saveSession();
         }
 
         function toggleOption(el, group) {
             el.classList.toggle('selected');
+            saveSession();
         }
 
         function selectFramework(el) {
@@ -766,6 +794,7 @@
                 }
             });
             el.style.opacity = '1';
+            saveSession();
         }
 
         function simulateAIGeneration() {
@@ -776,6 +805,9 @@
                 nextStep(7);
             }, 2500);
         }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', loadSession);
 
     </script>
 </body>
